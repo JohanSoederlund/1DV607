@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_D4FjcLZWEee7sYPkE4-GPA" name="model">
+  <eAnnotations xmi:id="_D4FjcbZWEee7sYPkE4-GPA" source="genmymodel">
+    <details xmi:id="_D4FjcrZWEee7sYPkE4-GPA" key="uuid" value="_8GWDEI8REeewrIfYd5mf8Q"/>
+    <details xmi:id="_D4Fjc7ZWEee7sYPkE4-GPA" key="author" value="johan.soederlund"/>
+  </eAnnotations>
+  <packageImport xmi:id="_D4FjdLZWEee7sYPkE4-GPA">
+    <eAnnotations xmi:id="_D4FjdbZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjdrZWEee7sYPkE4-GPA" key="uuid" value="_8GWDEY8REeewrIfYd5mf8Q"/>
+    </eAnnotations>
+    <importedPackage href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#/"/>
+  </packageImport>
+  <packagedElement xsi:type="uml:Class" xmi:id="_D4Fjd7ZWEee7sYPkE4-GPA" name="Player">
+    <eAnnotations xmi:id="_D4FjeLZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjebZWEee7sYPkE4-GPA" key="uuid" value="_XHZMcJh_EDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="_D4FjerZWEee7sYPkE4-GPA" name="name">
+      <eAnnotations xmi:id="_D4Fje7ZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjfLZWEee7sYPkE4-GPA" key="uuid" value="_mbjLoJiCEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" xmi:id="_D4FjfbZWEee7sYPkE4-GPA" name="GameRules">
+    <eAnnotations xmi:id="_D4FjfrZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4Fjf7ZWEee7sYPkE4-GPA" key="uuid" value="_XYcgMJh_EDW5DqpuGuKFAw"/>
+    </eAnnotations>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" xmi:id="_D4FjgLZWEee7sYPkE4-GPA" name="Dice">
+    <eAnnotations xmi:id="_D4FjgbZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjgrZWEee7sYPkE4-GPA" key="uuid" value="_Z-bD8Jh_EDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="_D4Fjg7ZWEee7sYPkE4-GPA" name="value" type="_D4Fj1rZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjhLZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjhbZWEee7sYPkE4-GPA" key="uuid" value="_LyRm8JiCEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" xmi:id="_D4FjhrZWEee7sYPkE4-GPA" name="ResultSheet">
+    <eAnnotations xmi:id="_D4Fjh7ZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjiLZWEee7sYPkE4-GPA" key="uuid" value="_gU1MYJh_EDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="_D4FjibZWEee7sYPkE4-GPA" name="totalSum">
+      <eAnnotations xmi:id="_D4FjirZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4Fji7ZWEee7sYPkE4-GPA" key="uuid" value="_hBjoIJiCEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_D4FjjLZWEee7sYPkE4-GPA" name="Player_Dice" memberEnd="_D4Fjj7ZWEee7sYPkE4-GPA _D4FjlLZWEee7sYPkE4-GPA" navigableOwnedEnd="_D4Fjj7ZWEee7sYPkE4-GPA _D4FjlLZWEee7sYPkE4-GPA">
+    <eAnnotations xmi:id="_D4FjjbZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjjrZWEee7sYPkE4-GPA" key="uuid" value="_Nt54EpiAEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_D4Fjj7ZWEee7sYPkE4-GPA" name="dice" type="_D4FjgLZWEee7sYPkE4-GPA" association="_D4FjjLZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjkLZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjkbZWEee7sYPkE4-GPA" key="uuid" value="_Nt54EJiAEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4FjkrZWEee7sYPkE4-GPA" value="5"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4Fjk7ZWEee7sYPkE4-GPA" value="5"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_D4FjlLZWEee7sYPkE4-GPA" name="rolls" type="_D4Fjd7ZWEee7sYPkE4-GPA" association="_D4FjjLZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjlbZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjlrZWEee7sYPkE4-GPA" key="uuid" value="_Nt54EZiAEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4Fjl7ZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4FjmLZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Class" xmi:id="_D4FjmbZWEee7sYPkE4-GPA" name="GameBoard">
+    <eAnnotations xmi:id="_D4FjmrZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4Fjm7ZWEee7sYPkE4-GPA" key="uuid" value="_CHQvoJiBEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedAttribute xmi:id="_D4FjnLZWEee7sYPkE4-GPA" name="date">
+      <eAnnotations xmi:id="_D4FjnbZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjnrZWEee7sYPkE4-GPA" key="uuid" value="_rUaYAJiCEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+    </ownedAttribute>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_D4Fjn7ZWEee7sYPkE4-GPA" name="Player_ResultSheet" memberEnd="_D4FjorZWEee7sYPkE4-GPA _D4Fjp7ZWEee7sYPkE4-GPA" navigableOwnedEnd="_D4FjorZWEee7sYPkE4-GPA _D4Fjp7ZWEee7sYPkE4-GPA">
+    <eAnnotations xmi:id="_D4FjoLZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjobZWEee7sYPkE4-GPA" key="uuid" value="_JsxIcZiBEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_D4FjorZWEee7sYPkE4-GPA" name="resultSheet" type="_D4FjhrZWEee7sYPkE4-GPA" association="_D4Fjn7ZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4Fjo7ZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjpLZWEee7sYPkE4-GPA" key="uuid" value="_JswhYJiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4FjpbZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4FjprZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_D4Fjp7ZWEee7sYPkE4-GPA" name="has" type="_D4Fjd7ZWEee7sYPkE4-GPA" association="_D4Fjn7ZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjqLZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjqbZWEee7sYPkE4-GPA" key="uuid" value="_JsxIcJiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4FjqrZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4Fjq7ZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_D4FjrLZWEee7sYPkE4-GPA" name="ResultSheet_GameBoard" memberEnd="_D4Fjr7ZWEee7sYPkE4-GPA _D4FjtLZWEee7sYPkE4-GPA" navigableOwnedEnd="_D4Fjr7ZWEee7sYPkE4-GPA _D4FjtLZWEee7sYPkE4-GPA">
+    <eAnnotations xmi:id="_D4FjrbZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjrrZWEee7sYPkE4-GPA" key="uuid" value="_doUQ4piBEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_D4Fjr7ZWEee7sYPkE4-GPA" name="consistsOf" type="_D4FjmbZWEee7sYPkE4-GPA" association="_D4FjrLZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjsLZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjsbZWEee7sYPkE4-GPA" key="uuid" value="_doUQ4JiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4FjsrZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4Fjs7ZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_D4FjtLZWEee7sYPkE4-GPA" name="resultSheet" type="_D4FjhrZWEee7sYPkE4-GPA" association="_D4FjrLZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjtbZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjtrZWEee7sYPkE4-GPA" key="uuid" value="_doUQ4ZiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4Fjt7ZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4FjuLZWEee7sYPkE4-GPA" value="5"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_D4FjubZWEee7sYPkE4-GPA" name="GameRules_ResultSheet" memberEnd="_D4FjvLZWEee7sYPkE4-GPA _D4FjwbZWEee7sYPkE4-GPA" navigableOwnedEnd="_D4FjvLZWEee7sYPkE4-GPA _D4FjwbZWEee7sYPkE4-GPA">
+    <eAnnotations xmi:id="_D4FjurZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4Fju7ZWEee7sYPkE4-GPA" key="uuid" value="_hNzJ0piBEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_D4FjvLZWEee7sYPkE4-GPA" name="resultSheet" type="_D4FjhrZWEee7sYPkE4-GPA" association="_D4FjubZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjvbZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4FjvrZWEee7sYPkE4-GPA" key="uuid" value="_hNzJ0JiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4Fjv7ZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4FjwLZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_D4FjwbZWEee7sYPkE4-GPA" name="definedBy" type="_D4FjfbZWEee7sYPkE4-GPA" association="_D4FjubZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjwrZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4Fjw7ZWEee7sYPkE4-GPA" key="uuid" value="_hNzJ0ZiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4FjxLZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4FjxbZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:Association" xmi:id="_D4FjxrZWEee7sYPkE4-GPA" name="Player_GameBoard" memberEnd="_D4FjybZWEee7sYPkE4-GPA _D4FjzrZWEee7sYPkE4-GPA" navigableOwnedEnd="_D4FjybZWEee7sYPkE4-GPA _D4FjzrZWEee7sYPkE4-GPA">
+    <eAnnotations xmi:id="_D4Fjx7ZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4FjyLZWEee7sYPkE4-GPA" key="uuid" value="_np3OUpiBEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+    <ownedEnd xmi:id="_D4FjybZWEee7sYPkE4-GPA" name="views" type="_D4FjmbZWEee7sYPkE4-GPA" association="_D4FjxrZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4FjyrZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4Fjy7ZWEee7sYPkE4-GPA" key="uuid" value="_np3OUJiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4FjzLZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4FjzbZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_D4FjzrZWEee7sYPkE4-GPA" name="player" type="_D4Fjd7ZWEee7sYPkE4-GPA" association="_D4FjxrZWEee7sYPkE4-GPA">
+      <eAnnotations xmi:id="_D4Fjz7ZWEee7sYPkE4-GPA" source="genmymodel">
+        <details xmi:id="_D4Fj0LZWEee7sYPkE4-GPA" key="uuid" value="_np3OUZiBEDW5DqpuGuKFAw"/>
+      </eAnnotations>
+      <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_D4Fj0bZWEee7sYPkE4-GPA" value="1"/>
+      <upperValue xsi:type="uml:LiteralUnlimitedNatural" xmi:id="_D4Fj0rZWEee7sYPkE4-GPA" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xsi:type="uml:DataType" xmi:id="_D4Fj07ZWEee7sYPkE4-GPA" name="DataType">
+    <eAnnotations xmi:id="_D4Fj1LZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4Fj1bZWEee7sYPkE4-GPA" key="uuid" value="_P2GBsJiCEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+  </packagedElement>
+  <packagedElement xsi:type="uml:DataType" xmi:id="_D4Fj1rZWEee7sYPkE4-GPA" name="DataType2">
+    <eAnnotations xmi:id="_D4Fj17ZWEee7sYPkE4-GPA" source="genmymodel">
+      <details xmi:id="_D4Fj2LZWEee7sYPkE4-GPA" key="uuid" value="_UMv44JiCEDW5DqpuGuKFAw"/>
+    </eAnnotations>
+  </packagedElement>
+</uml:Model>
