@@ -16,16 +16,16 @@ namespace Yahtzee.Model
         }
 
 
-        public int doHave(int cat)
+        public int doHave(Categorie cat)
         {
-            switch (cat)
+            switch ((int)cat)
             {
                 case 0:
                 case 1:
                 case 2:
                 case 3:
                 case 4:
-                case 5: return Number(cat);
+                case 5: return Number((int)cat);
                 case 6: return ThreeOfAKind();
                 case 7: return FourOfAKind();
                 case 8: return FullHouse();

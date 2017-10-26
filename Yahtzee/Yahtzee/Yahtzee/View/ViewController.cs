@@ -8,20 +8,20 @@ using Yahtzee.Model;
 
 namespace Yahtzee.View
 {
-    class Layout
+    class ViewController
     {
         private ScoreView scoreView;
         private SetupView setupView;
         private RoundView roundView;
 
-        private readonly string mainMenu = "Welcome to Yahtzee! \nThe rules are ... \n";
-        public Layout()
+        
+        public ViewController()
         {
-            scoreView = new ScoreView();
             setupView = new SetupView();
+            scoreView = new ScoreView();
             roundView = new RoundView();
             Restart = false;
-            Console.WriteLine(mainMenu);
+            
         }
 
         public bool Restart { get; private set; }
@@ -40,6 +40,7 @@ namespace Yahtzee.View
             }
             return setupView.PlayerName();
         }
+        
 
         public void RenderRound(string name, int roundNumber)
         {
@@ -57,9 +58,9 @@ namespace Yahtzee.View
             roundView.RenderDie(collectionOfDice);
         }
 
-        public Categorie RenderCategorie(bool[] usedCategories)
+        public Categorie RenderCategorie()
         {
-            return roundView.RenderCategorie(usedCategories);
+            return roundView.RenderCategorie();
         }
 
         public void RenderDieToRoll(bool[] DieToRoll, string decision)
@@ -67,14 +68,9 @@ namespace Yahtzee.View
             roundView.RenderDieToRoll(DieToRoll, decision);
         }
 
-        public void RenderRoundScore(int roundScore, int usedCategorie)
+        public void RenderRoundScore(int roundScore, Categorie usedCategorie)
         {
-            roundView.RenderRoundScore(roundScore, usedCategorie);
-        }
-
-        public void RenderScoreBoard(List<Player> players)
-        {
-            scoreView.RenderScoreBoard(players);
+            scoreView.RenderRoundScore(roundScore, usedCategorie);
         }
 
         public bool ContinueGame()
@@ -84,6 +80,12 @@ namespace Yahtzee.View
         public bool ResumeGame()
         {
             return roundView.ResumeGame();
+        }
+
+
+        public void RenderScoreBoard(List<Player> players)
+        {
+            scoreView.RenderScoreBoard(players);
         }
     }
 }

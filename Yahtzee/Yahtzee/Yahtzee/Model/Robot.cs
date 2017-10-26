@@ -43,47 +43,44 @@ namespace Yahtzee.Model
 
 
 
-        public int CalcBestValue()
+        public Categorie CalcBestValue()
         {
             //intentially fall through all options to find best value
             int high = 0;
-            int highCat = 0;
+            Categorie highCat = 0;
             int[] possible = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            for (int i = 0; i < 12; i++)
+
+            foreach (Categorie cat in CategorieModel.GetList())
             {
-                possible[i] = rules.doHave(i);
-                //Console.WriteLine("CAT: " + i + "   VALUE: " + possible[i]);
-                if (!Score.UsedCategories[i] && possible[i] >= high)  // always chose the highest score and if many on same highest cat
+                int i = (int)cat;
+                possible[i] = rules.doHave(cat);
+                if (cat != Categorie.Chance && !Score.GetUsedCategorie(cat) && possible[i] >= high)  // always chose the highest score and if many on same highest cat
                 {
                     high = possible[i];
-                    highCat = i;
+                    highCat = cat;
                     //Console.WriteLine("New HIGH: " + high + "   CAT: " + highCat);
                 }
             }
 
-            possible[12] = rules.doHave(12);
-            if (!Score.UsedCategories[12] && possible[12] > high && high < 10 && highCat > 3 && highCat < 11)  // Only chance if nothing better or equal
+            possible[12] = rules.doHave(Categorie.Chance);
+            if (!Score.GetUsedCategorie(Categorie.Chance) && possible[12] > high && high < 10 && highCat > Categorie.Threes && highCat < Categorie.Yahtzee)  // Only chance if nothing better or equal
             {
                 high = possible[12];
-                highCat = 12;
-                //Console.WriteLine("New HIGH: " + high + "   CAT: " + highCat);
+                highCat = Categorie.Chance;
             }
 
-            //Console.WriteLine("\n\nBEST  HIGH: " + high + "   CAT: " + highCat);
-
-            Score.UsedCategories[highCat] = true;
-            Score.ScoreCard[highCat] = high;
+            Score.SetUsedCategorie(highCat, true);
+            Score.SetScoreInScoreCard(highCat, high);
             return highCat;
         }
 
         private bool Stand()
         {
-            if ((rules.Yahtzee() > 0) && !Score.UsedCategories[11] ||
-                (rules.FullHouse() > 0) && !Score.UsedCategories[8] ||
-                (rules.SmallStraight() > 0) && !Score.UsedCategories[9] ||
-                (rules.LargeStraight() > 0) && !Score.UsedCategories[10])
-                
+            if ((rules.Yahtzee() > 0) && !Score.GetUsedCategorie(Categorie.Yahtzee) ||
+                (rules.FullHouse() > 0) && !Score.GetUsedCategorie(Categorie.FullHouse) ||
+                (rules.LargeStraight() > 0) && !Score.GetUsedCategorie(Categorie.LargeStraight) ||
+                (rules.SmallStraight() > 0) && !Score.GetUsedCategorie(Categorie.SmallStraight))
             {
                 Decision = "Stand";
                 return true;   // stand
@@ -113,7 +110,7 @@ namespace Yahtzee.Model
         {
             // Keep good chance for straight, check small straight and large straight aren't taken
             // Keep three in a row but not down to dice value 1, i.e. only high or open straight
-            if (!(Score.UsedCategories[9] && Score.UsedCategories[10]))
+            if (!(Score.GetUsedCategorie(Categorie.SmallStraight) && Score.GetUsedCategorie(Categorie.LargeStraight)))
             {
                 for (int i = 5; i > 2; i--)
                 {
@@ -154,7 +151,7 @@ namespace Yahtzee.Model
         private bool KeepTwoPair(int[] diceVal, int[] die)
         {
             // Keep two pair for a full house, check full house isn't taken
-            if (!Score.UsedCategories[8])
+            if (!Score.GetUsedCategorie(Categorie.FullHouse))
             {
                 int firstPairValue = 0;
                 int secondPairValue = 0;
@@ -204,6 +201,8 @@ namespace Yahtzee.Model
             return false;
         }
 
+
+/*
         public int SelectLeastValuableCat()
         {
             if (!Score.UsedCategories[0]) return 0;
@@ -216,5 +215,6 @@ namespace Yahtzee.Model
             if (!Score.UsedCategories[7]) return 7;
             return 8;
         }
+*/
     }
 }

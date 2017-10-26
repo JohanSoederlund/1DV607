@@ -9,8 +9,10 @@ namespace Yahtzee.View
     class SetupView
     {
 
+        private readonly string mainMenu = "Welcome to Yahtzee! \nThe rules are ... \n";
         public SetupView()
         {
+            Console.WriteLine(mainMenu);
         }
         public int NumberOfPlayers()
         {

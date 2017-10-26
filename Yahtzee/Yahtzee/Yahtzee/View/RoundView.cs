@@ -7,7 +7,7 @@ using Yahtzee.Model;
 
 namespace Yahtzee.View
 {
-    class RoundView
+    class RoundView : Display
     {
 
         public void RenderRound(string name, int roundNumber)
@@ -40,7 +40,7 @@ namespace Yahtzee.View
                     stand = false;
             }
             if (stand)
-                Console.Write("\n" + decision );
+                Console.Write("\n" + decision + "\n");
             else
             {
                 Console.Write("\n" + decision + " - Decided to reroll: ");
@@ -64,7 +64,7 @@ namespace Yahtzee.View
             while (getInput)
             {
                 dieToRoll = new bool[] { false, false, false, false, false };
-                Console.WriteLine("Select die to roll på entering the id numbers of your choosen die e.g.(1 2 3 5), or (0) to stand");
+                Console.WriteLine("Select die to roll by entering the id numbers of your choosen die e.g.(1 2 3 5), or (0) to stand");
                 string input = Console.ReadLine();
                 string[] dieNumbers = input.Split(' ');
                 getInput = false;
@@ -75,14 +75,13 @@ namespace Yahtzee.View
                 }
                 for (int i = 0; i < dieNumbers.Length; i++)
                 {
-                    Console.WriteLine(dieNumbers[i]);
                     if (Int32.TryParse(dieNumbers[i], out index) && index >= 1 && index <= 5)
                     {
                         dieToRoll[index - 1] = true;
                     }
                     else
                     {
-                        Console.WriteLine("Invalid input");
+                        PrintErrorMessage("Invalid input");
                         getInput = true;
                         break;
                     }
@@ -91,56 +90,58 @@ namespace Yahtzee.View
             return dieToRoll;
         }
 
-        public Categorie RenderCategorie(bool[] usedCategories)
+        public Categorie RenderCategorie()
         {
-            int value;
-            int enumLength = Enum.GetNames(typeof(Categorie)).Length;
+            int enumLength = CategorieModel.GetSize();
             string output = "Select number categorie from this list e.g.(3): \n";
             for (int i = 0; i < enumLength; i++)
             {
-                output += "(" + i + ") " + Enum.GetName(typeof(Categorie), i) + "\n";
+                
+            }
+
+            foreach (Categorie categorie in CategorieModel.GetList())
+            {
+                output += "(" + (int)categorie + ") " + categorie + "\n";
             }
             while (true)
             {
                 Console.WriteLine(output);
-                if (Int32.TryParse(Console.ReadLine(), out value) && value >= 0 && value < enumLength)
+                if (Int32.TryParse(Console.ReadLine(), out int value) && value >= 0 && value < enumLength)
                 {
-                    return (Categorie)value;
+                    return CategorieModel.GetCategorie(value);
                 }
-                Console.WriteLine("Invalid input");
+                PrintErrorMessage("Invalid input");
             }
         }
-
-        public void RenderRoundScore(int roundScore, int usedCategorie)
-        {
-            Console.WriteLine("Recieved " + roundScore + " points for categorie " + CategorieModel.GetName(usedCategorie));
-        }
+        
         public bool ContinueGame()
         {
-            
             do
             {
-                Console.WriteLine("Continue game (y/n)");
+                PrintMessage("Continue game (y/n)");
+                
                 string input = Console.ReadLine().ToLower();
                 if (input.CompareTo("y") == 0)
                 {
+                    Console.Clear();
                     return true;
                 }
                 else if (input.CompareTo("n") == 0)
                 {
-                    Console.WriteLine("Game will be saved");
+                    Console.Clear();
+                    PrintMessage("Game will be saved");
                     return false;
                 }
-                Console.WriteLine("Invalid input, answer with (y/n).");
+                PrintErrorMessage("Invalid input, answer with (y/n).");
             } while (true);
         }
 
         public bool ResumeGame()
         {
-
             do
             {
-                Console.WriteLine("Resume saves game (y/n)");
+                PrintMessage("Do you want to resume last instance of saved game (y/n)");
+
                 string input = Console.ReadLine().ToLower();
                 if (input.CompareTo("y") == 0)
                 {
@@ -150,7 +151,7 @@ namespace Yahtzee.View
                 {
                     return false;
                 }
-                Console.WriteLine("Invalid input, answer with (y/n).");
+                PrintErrorMessage("Invalid input, answer with (y/n).");
             } while (true);
         }
 

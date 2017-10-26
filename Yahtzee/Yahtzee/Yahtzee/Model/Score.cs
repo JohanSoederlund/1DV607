@@ -11,12 +11,12 @@ namespace Yahtzee.Model
 
         public Score()
         {
-            UsedCategories = new bool[Enum.GetNames(typeof(Categorie)).Length];
-            ScoreCard = new int[Enum.GetNames(typeof(Categorie)).Length];
-            for (int i = 0; i < UsedCategories.Length; i++)
+            UsedCategories = new bool[CategorieModel.GetSize()];
+            ScoreCard = new int[CategorieModel.GetSize()];
+            foreach (Categorie categorie in CategorieModel.GetList())
             {
-                UsedCategories[i] = false;
-                ScoreCard[i] = 0;
+                SetUsedCategorie(categorie, false);
+                SetScoreInScoreCard(categorie, 0);
             }
         }
 
@@ -35,12 +35,60 @@ namespace Yahtzee.Model
             }
             return totalScore;
         }
+        private int[] ScoreCard { get; set;}
 
-        public int[] ScoreCard { get; private set; }
+        public int[] GetScoreCard()
+        {
+            int[] ScoreCardCopy = new int[CategorieModel.GetSize()];
+            ScoreCard.CopyTo(ScoreCardCopy, 0);
+            return ScoreCardCopy;
+        }
 
-        public bool[] UsedCategories { get; private set; }
+        public int GetScoreInScoreCard(Categorie cat)
+        {
+            return ScoreCard[(int)cat];
+        }
+        public void SetScoreInScoreCard(Categorie categorieToUse, int value)
+        {
+            ScoreCard[(int)categorieToUse] = value; 
+        }
 
-        //public Add
+        public bool[] GetUsedCategories()
+        {
+            bool[] UsedCategoriesCopy = new bool[CategorieModel.GetSize()];
+            UsedCategories.CopyTo(UsedCategoriesCopy, 0);
+            return UsedCategoriesCopy;
+        }
+  
+         
+
+
+        private bool[] UsedCategories { get; set; }
+        public bool GetUsedCategorie(Categorie categorieToUse)
+        {
+            return UsedCategories[(int)categorieToUse];
+        }
+
+        public void SetUsedCategorie(Categorie categorieToUse, bool value)
+        {
+            UsedCategories[(int)categorieToUse] = value;
+        }
+        public int GetNumberOfCategories()
+        {
+            return UsedCategories.Length;
+        }
+        public int GetNumberOfUsedCategories()
+        {
+            int rounds = 0;
+            foreach (Categorie cat in Enum.GetValues(typeof(Categorie)))
+            {
+                if (GetUsedCategorie(cat))
+                {
+                    rounds++;
+                }
+            }
+            return rounds;
+        }
     }
 }
 

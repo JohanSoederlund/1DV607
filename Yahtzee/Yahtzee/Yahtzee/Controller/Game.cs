@@ -16,42 +16,44 @@ namespace Yahtzee.Controller
         private Rules rules;
         private CollectionOfDice collectionOfDice;
 
-        private Layout layout;
+        private ViewController viewController;
 
 
         public Game()
         {
             
-            InitGame();
-            RunGame();
+            int ronudNbr = InitGame();
+            RunGame(ronudNbr+1);
 
         }
 
         private bool[] DieToRoll { get; set; }
 
-        private void InitGame()
+        private int InitGame()
         {
+            int roundNbr = 0;
             dataBase = new DataBase();
             collectionOfDice = new CollectionOfDice();
             rules = new Rules(collectionOfDice);
-            layout = new Layout();
+            viewController = new ViewController();
 
-            if (layout.ResumeGame())
+            if (viewController.ResumeGame())
             {
                 players = dataBase.GetFromFile(rules);
+                roundNbr = GetRoundsPlayed();
             }
             else
             {
                 PlayerSetup();
             }
-
+            return roundNbr;
         }
-        private void RunGame()
+        private void RunGame(int startRound)
         {
-            Console.Clear();
-            for (int i = 1; i <= CategorieModel.GetSize(); i++)
+            for (int i = startRound; i <= CategorieModel.GetSize(); i++)
             {
-                if (!layout.ContinueGame())
+
+                if (i != startRound && !viewController.ContinueGame())
                 {
                     dataBase.SaveToFile(players);
                     return;
@@ -67,10 +69,10 @@ namespace Yahtzee.Controller
         {
             bool robot;
             players = new List<Player>();
-            int numberOfPlayers = layout.NumberOfPlayers();
+            int numberOfPlayers = viewController.NumberOfPlayers();
             for (int i = 0; i < numberOfPlayers; i++)
             {
-                string name = layout.PlayerName(out robot);
+                string name = viewController.PlayerName(out robot);
                 if (robot)
                 {
                     players.Add(new Robot(GetNumberOfRobots()+1, rules));
@@ -110,61 +112,67 @@ namespace Yahtzee.Controller
                 }
 
             }
-            layout.RenderScoreBoard(players);
+            viewController.RenderScoreBoard(players);
         }
 
         private void RobotRound(Robot robot, int roundNumber)
         {
-            layout.RenderRound(robot.Name, roundNumber);
+            viewController.RenderRound(robot.Name, roundNumber);
             collectionOfDice.Roll(DieToRoll);
 
-            layout.RenderDie(collectionOfDice);
+            viewController.RenderDie(collectionOfDice);
             Thread.Sleep(1000);
             DieToRoll = robot.DecideDiceToRoll(collectionOfDice.GetNumberOfDiceFaceValue(), collectionOfDice.GetDie());
-            layout.RenderDieToRoll(DieToRoll, robot.Decision);
-            Thread.Sleep(1000);
-            collectionOfDice.Roll(DieToRoll);
+            viewController.RenderDieToRoll(DieToRoll, robot.Decision);
 
-            layout.RenderDie(collectionOfDice);
-            Thread.Sleep(1000);
-            DieToRoll = robot.DecideDiceToRoll(collectionOfDice.GetNumberOfDiceFaceValue(), collectionOfDice.GetDie());
-            layout.RenderDieToRoll(DieToRoll, robot.Decision);
-            Thread.Sleep(1000);
-            collectionOfDice.Roll(DieToRoll);
-            layout.RenderDie(collectionOfDice);
+            if (AnyDiceToRoll())
+            {
+                Thread.Sleep(1000);
+                collectionOfDice.Roll(DieToRoll);
 
-            int usedCategorie = robot.CalcBestValue();
-            int roundScore = robot.Score.ScoreCard[usedCategorie];
-            layout.RenderRoundScore(roundScore, usedCategorie);
+                viewController.RenderDie(collectionOfDice);
+                Thread.Sleep(1000);
+                DieToRoll = robot.DecideDiceToRoll(collectionOfDice.GetNumberOfDiceFaceValue(), collectionOfDice.GetDie());
+                viewController.RenderDieToRoll(DieToRoll, robot.Decision);
+                if (AnyDiceToRoll())
+                {
+                    Thread.Sleep(1000);
+                    collectionOfDice.Roll(DieToRoll);
+                    viewController.RenderDie(collectionOfDice);
+                }
+            }
+            Categorie usedCategorie = robot.CalcBestValue();
+            int roundScore = robot.Score.GetScoreInScoreCard(usedCategorie);
+
+            viewController.RenderRoundScore(roundScore, usedCategorie);
             Thread.Sleep(1000);
         }
 
         private void PlayerRound(Player player, int roundNumber)
         {
-            layout.RenderRound(player.Name, roundNumber);
+            viewController.RenderRound(player.Name, roundNumber);
             collectionOfDice.Roll(DieToRoll);
 
-            layout.RenderDie(collectionOfDice);
-            DieToRoll = layout.GetDieToRoll();
+            viewController.RenderDie(collectionOfDice);
+            DieToRoll = viewController.GetDieToRoll();
 
             if (AnyDiceToRoll())
             {
                 collectionOfDice.Roll(DieToRoll);
 
-                layout.RenderDie(collectionOfDice);
-                DieToRoll = layout.GetDieToRoll();
+                viewController.RenderDie(collectionOfDice);
+                DieToRoll = viewController.GetDieToRoll();
                 if (AnyDiceToRoll())
                 {
                     collectionOfDice.Roll(DieToRoll);
-                    layout.RenderDie(collectionOfDice);
+                    viewController.RenderDie(collectionOfDice);
                 }
             }
-            Categorie categorieToUse = layout.RenderCategorie(player.Score.UsedCategories);
-
-            if (categorieToUse == Categorie.ThreeOfAKind)
+            bool categoryUpdated = false;
+            while (!categoryUpdated)
             {
-                player.Score.ScoreCard[(int)categorieToUse] = rules.ThreeOfAKind();
-                player.Score.UsedCategories[(int)categorieToUse] = true;
+                Categorie categorieToUse = viewController.RenderCategorie();
+                categoryUpdated = updateScoreCardForPlayer(player, categorieToUse);
             }
         }
         private bool AnyDiceToRoll()
@@ -178,6 +186,22 @@ namespace Yahtzee.Controller
             return roll;
         }
 
+        private int GetRoundsPlayed()
+        {
+            return players[0].Score.GetNumberOfUsedCategories();
+        }
+
+        private bool updateScoreCardForPlayer(Player player, Categorie categorieToUse)
+        {
+            bool acceptedUpdate = false;
+            if (!player.Score.GetUsedCategorie(categorieToUse))
+            {
+                player.Score.SetScoreInScoreCard(categorieToUse, rules.doHave(categorieToUse));
+                player.Score.SetUsedCategorie(categorieToUse, true);
+                acceptedUpdate = true;
+            }
+            return acceptedUpdate;
+        }
 
     }
 

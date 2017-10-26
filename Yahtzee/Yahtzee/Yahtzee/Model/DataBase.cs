@@ -25,8 +25,8 @@ namespace Yahtzee.Model
             StreamWriter file = new StreamWriter(pathToDB);
             foreach (Player player in players)
             {
-                string scoreCardToSave = serializer.Serialize(player.Score.ScoreCard);
-                string usedCategories = serializer.Serialize(player.Score.UsedCategories);
+                string scoreCardToSave = serializer.Serialize(player.Score.GetScoreCard());
+                string usedCategories = serializer.Serialize(player.Score.GetUsedCategories());
                 file.WriteLine(player.Name);
                 file.WriteLine(serializer.Serialize(player.IsRobot));
                 file.WriteLine(scoreCardToSave);
