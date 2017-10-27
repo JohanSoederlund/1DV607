@@ -45,14 +45,15 @@ namespace Yahtzee.View
                     Console.Write("\t");
                 foreach (Player player in players)
                 {
-                    Console.Write(player.Score.GetScoreInScoreCard(categorie) + "\t");
+                    bool exist;
+                    Console.Write(player.GetScore(categorie, out exist) + "\t");
                 }
                 Console.WriteLine(" |\n" + divider);
             }
             Console.Write("|Sum\t\t");
             foreach (Player player in players)
             {
-                Console.Write(player.Score.GetTotalScore() + "\t");
+                Console.Write(player.GetTotalScore() + "\t");
             }
             Console.WriteLine(" |\n^" + end+"^");
             Console.ResetColor();

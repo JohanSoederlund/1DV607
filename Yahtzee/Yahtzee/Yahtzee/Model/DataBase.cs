@@ -25,6 +25,21 @@ namespace Yahtzee.Model
             StreamWriter file = new StreamWriter(pathToDB);
             foreach (Player player in players)
             {
+                Score[] scoreCardListToSave = player.GetScoreList();
+                string scoreCardScoreToSave = serializer.Serialize(scoreCardListToSave);
+                file.WriteLine(player.Name);
+                file.WriteLine(serializer.Serialize(player.IsRobot));
+                file.WriteLine(scoreCardScoreToSave);
+            }
+            file.Close();
+        }
+
+        /*
+        public void SaveToFile(List<Player> players)
+        {
+            StreamWriter file = new StreamWriter(pathToDB);
+            foreach (Player player in players)
+            {
                 string scoreCardToSave = serializer.Serialize(player.Score.GetScoreCard());
                 string usedCategories = serializer.Serialize(player.Score.GetUsedCategories());
                 file.WriteLine(player.Name);
@@ -34,35 +49,39 @@ namespace Yahtzee.Model
             }
             file.Close();
         }
-
+        */
         public List<Player> GetFromFile(Rules rules)
         {
             string line;
             List<Player> players = new List<Player>();
             List<string> items = new List<string>();
             StreamReader file = new StreamReader(pathToDB);
+
+
+
             while((line = file.ReadLine()) != null)
             {
                 items.Add(line);
             }
             file.Close();
-            for (int i = 0; i < (items.Count / 4);i++)
+
+            for (int i = 0; i < (items.Count / 3);i++)
             {
-                int[] scoreCardToSave = serializer.Deserialize<int[]>(items[i*3 + 2]);
-                bool[] usedCategories = serializer.Deserialize<bool[]>(items[i*3 + 3]);
+                var scoreCardArrayToSave = serializer.Deserialize<Score[]>(items[i*3 + 2]);
+              //  List<Score> scoreCardListToSave = scoreCardArrayToSave.OfType<Score>().ToList();
                 bool isRobot = serializer.Deserialize<bool>(items[i * 3 + 1]);
                 if (isRobot)
                 {
-                    Robot robot = new Robot(items[i * 3], rules, scoreCardToSave, usedCategories);
-                    players.Add(robot);
+               //     Robot robot = new Robot(items[i * 3], rules, scoreCardListToSave);
+                //    players.Add(robot);
                 }
                 else
                 {
-                    Player player = new Player(items[i * 3], scoreCardToSave, usedCategories);
-                    players.Add(player);
+          //          Player player = new Player(items[i * 3], scoreCardListToSave);
+          //          players.Add(player);
                 }
             }
-            
+          
             return players;
         }
 

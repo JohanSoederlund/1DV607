@@ -141,10 +141,14 @@ namespace Yahtzee.Controller
                     viewController.RenderDie(collectionOfDice);
                 }
             }
-            Categorie usedCategorie = robot.CalcBestValue();
-            int roundScore = robot.Score.GetScoreInScoreCard(usedCategorie);
 
-            viewController.RenderRoundScore(roundScore, usedCategorie);
+            Categorie usedCategorie = robot.CalcBestValue();
+            bool exist = false;
+            int roundScore = robot.GetScore(usedCategorie, out exist);
+            if (exist)
+            {
+                viewController.RenderRoundScore(roundScore, usedCategorie);
+            }
             Thread.Sleep(1000);
         }
 
@@ -188,16 +192,18 @@ namespace Yahtzee.Controller
 
         private int GetRoundsPlayed()
         {
-            return players[0].Score.GetNumberOfUsedCategories();
+            if (players.Count > 0)
+                return players[0].GetScoreSize();
+            return 0;
         }
 
         private bool updateScoreCardForPlayer(Player player, Categorie categorieToUse)
         {
             bool acceptedUpdate = false;
-            if (!player.Score.GetUsedCategorie(categorieToUse))
+            if (!player.GetCategorieUsed(categorieToUse))
             {
-                player.Score.SetScoreInScoreCard(categorieToUse, rules.doHave(categorieToUse));
-                player.Score.SetUsedCategorie(categorieToUse, true);
+                player.AddScore(categorieToUse, rules.doHave(categorieToUse));
+ 
                 acceptedUpdate = true;
             }
             return acceptedUpdate;
