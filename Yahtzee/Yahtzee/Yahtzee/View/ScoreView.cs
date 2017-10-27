@@ -12,9 +12,9 @@ namespace Yahtzee.View
         public ScoreView()
         {
         }
-        public void RenderRoundScore(int roundScore, Categorie usedCategorie)
+        public void RenderRoundScore(int roundScore, Category usedCategorie)
         {
-            Console.WriteLine("Recieved " + roundScore + " points for categorie " + CategorieModel.GetName(usedCategorie));
+            Console.WriteLine("Recieved " + roundScore + " points for categorie " + CategoryModel.GetName(usedCategorie));
         }
         public void RenderScoreBoard(List<Player> players)
         {
@@ -38,10 +38,10 @@ namespace Yahtzee.View
             }
             Console.WriteLine(" |\n" + divider);
 
-            foreach (Categorie categorie in CategorieModel.GetList())
+            foreach (Category categorie in CategoryModel.GetList())
             {
                 Console.Write("|" + categorie + "\t");
-                if (categorie <= Categorie.Sixes || categorie == Categorie.Chance)
+                if (categorie <= Category.Sixes || categorie == Category.Chance)
                     Console.Write("\t");
                 foreach (Player player in players)
                 {

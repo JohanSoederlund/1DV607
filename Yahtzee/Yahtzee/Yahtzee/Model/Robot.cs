@@ -8,17 +8,13 @@ namespace Yahtzee.Model
 {
     class Robot : Player
     {
-        Rules rules;
-        
         public Robot(int id, Rules rules)
-            : base("Robot" + id, true)
+            : base("Robot" + id, rules, true)
         {
-            this.rules = rules;
         }
         public Robot(string name, Rules rules, List<Score> scores)
-            : base(name, scores, true)
+            : base(name, scores, rules, true)
         {
-            this.rules = rules;
         }
         public string Decision { get; private set; }
         private bool[] Dice2Roll { get; set; }
@@ -43,43 +39,41 @@ namespace Yahtzee.Model
 
 
 
-        public Categorie CalcBestValue()
+        public Category CalcBestValue()
         {
             //intentially fall through all options to find best value
-            int high = 0;
-            Categorie highCat = 0;
-            int[] possible = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int highestValue = 0;
+            Category highCategory = 0;
+            int[] getValueForCategories = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 
-            foreach (Categorie cat in CategorieModel.GetList())
+            foreach (Category category in CategoryModel.GetList())
             {
-                int i = (int)cat;
-                possible[i] = rules.doHave(cat);
-                if (cat != Categorie.Chance && !GetCategorieUsed(cat) && possible[i] >= high)  // always chose the highest score and if many on same highest cat
+                int i = (int)category;
+                getValueForCategories[i] = rules.GetValueForCategorie(category);
+                if (category != Category.Chance && !GetCategorieUsed(category) && getValueForCategories[i] >= highestValue)  // always chose the highest score and if many on same highest cat
                 {
-                    high = possible[i];
-                    highCat = cat;
-                    //Console.WriteLine("New HIGH: " + high + "   CAT: " + highCat);
+                    highestValue = getValueForCategories[i];
+                    highCategory = category;
                 }
             }
 
-            possible[12] = rules.doHave(Categorie.Chance);
-            if (!GetCategorieUsed(Categorie.Chance) && possible[12] > high && high < 10 && highCat > Categorie.Threes && highCat < Categorie.Yahtzee)  // Only chance if nothing better or equal
+            getValueForCategories[12] = rules.GetValueForCategorie(Category.Chance);
+            if (!GetCategorieUsed(Category.Chance) && getValueForCategories[12] > highestValue && highestValue < 10 && highCategory > Category.Threes && highCategory < Category.Yahtzee)  // Only chance if nothing better or equal
             {
-                high = possible[12];
-                highCat = Categorie.Chance;
+                highCategory = Category.Chance;
             }
 
-            AddScore(highCat, high);
-            return highCat;
+            AddScore(highCategory);
+            return highCategory;
         }
 
         private bool Stand()
         {
-            if ((rules.Yahtzee() > 0) && !GetCategorieUsed(Categorie.Yahtzee) ||
-                (rules.FullHouse() > 0) && !GetCategorieUsed(Categorie.FullHouse) ||
-                (rules.LargeStraight() > 0) && !GetCategorieUsed(Categorie.LargeStraight) ||
-                (rules.SmallStraight() > 0) && !GetCategorieUsed(Categorie.SmallStraight))
+            if ((rules.GetValueForCategorie(Category.Yahtzee) > 0) && !GetCategorieUsed(Category.Yahtzee) ||
+                (rules.GetValueForCategorie(Category.FullHouse) > 0) && !GetCategorieUsed(Category.FullHouse) ||
+                (rules.GetValueForCategorie(Category.LargeStraight) > 0) && !GetCategorieUsed(Category.LargeStraight) ||
+                (rules.GetValueForCategorie(Category.SmallStraight) > 0) && !GetCategorieUsed(Category.SmallStraight))
             {
                 Decision = "Stand";
                 return true;   // stand
@@ -109,7 +103,7 @@ namespace Yahtzee.Model
         {
             // Keep good chance for straight, check small straight and large straight aren't taken
             // Keep three in a row but not down to dice value 1, i.e. only high or open straight
-            if (!(GetCategorieUsed(Categorie.SmallStraight) && GetCategorieUsed(Categorie.LargeStraight)))
+            if (!(GetCategorieUsed(Category.SmallStraight) && GetCategorieUsed(Category.LargeStraight)))
             {
                 for (int i = 5; i > 2; i--)
                 {
@@ -150,7 +144,7 @@ namespace Yahtzee.Model
         private bool KeepTwoPair(int[] diceVal, int[] die)
         {
             // Keep two pair for a full house, check full house isn't taken
-            if (!GetCategorieUsed(Categorie.FullHouse))
+            if (!GetCategorieUsed(Category.FullHouse))
             {
                 int firstPairValue = 0;
                 int secondPairValue = 0;

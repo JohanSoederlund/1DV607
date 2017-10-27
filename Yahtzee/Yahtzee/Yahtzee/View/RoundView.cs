@@ -90,16 +90,16 @@ namespace Yahtzee.View
             return dieToRoll;
         }
 
-        public Categorie RenderCategorie()
+        public Category RenderCategorie()
         {
-            int enumLength = CategorieModel.GetSize();
+            int enumLength = CategoryModel.GetSize();
             string output = "Select number categorie from this list e.g.(3): \n";
             for (int i = 0; i < enumLength; i++)
             {
                 
             }
 
-            foreach (Categorie categorie in CategorieModel.GetList())
+            foreach (Category categorie in CategoryModel.GetList())
             {
                 output += "(" + (int)categorie + ") " + categorie + "\n";
             }
@@ -108,7 +108,7 @@ namespace Yahtzee.View
                 Console.WriteLine(output);
                 if (Int32.TryParse(Console.ReadLine(), out int value) && value >= 0 && value < enumLength)
                 {
-                    return CategorieModel.GetCategorie(value);
+                    return CategoryModel.GetCategorie(value);
                 }
                 PrintErrorMessage("Invalid input");
             }

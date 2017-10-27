@@ -8,7 +8,7 @@ namespace Yahtzee.Model
 {
     class Score
     {
-        public Categorie UsedCategorie { get; private set; }
+        public Category UsedCategorie { get; private set; }
 
         public int Points { get; private set; }
 
@@ -16,7 +16,7 @@ namespace Yahtzee.Model
         {
         }
 
-        public Score(Categorie categorie, int points)
+        public Score(Category categorie, int points)
         {
             UsedCategorie = categorie;
             Points = points;

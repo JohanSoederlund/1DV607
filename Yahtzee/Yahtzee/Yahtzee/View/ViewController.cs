@@ -58,7 +58,7 @@ namespace Yahtzee.View
             roundView.RenderDie(collectionOfDice);
         }
 
-        public Categorie RenderCategorie()
+        public Category RenderCategorie()
         {
             return roundView.RenderCategorie();
         }
@@ -68,7 +68,7 @@ namespace Yahtzee.View
             roundView.RenderDieToRoll(DieToRoll, decision);
         }
 
-        public void RenderRoundScore(int roundScore, Categorie usedCategorie)
+        public void RenderRoundScore(int roundScore, Category usedCategorie)
         {
             scoreView.RenderRoundScore(roundScore, usedCategorie);
         }

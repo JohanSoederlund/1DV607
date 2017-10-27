@@ -9,7 +9,7 @@ using Yahtzee.View;
 
 namespace Yahtzee.Controller
 {
-    class Game
+    class Game : GameModel
     {
         private DataBase dataBase;
         private List<Player> players;
@@ -18,20 +18,17 @@ namespace Yahtzee.Controller
 
         private ViewController viewController;
 
-
         public Game()
         {
-            
-            int ronudNbr = InitGame();
-            RunGame(ronudNbr+1);
-
+            InitGame();
+            IncrementRoundNumber();
+            RunGame();
         }
 
         private bool[] DieToRoll { get; set; }
 
-        private int InitGame()
+        private void InitGame()
         {
-            int roundNbr = 0;
             dataBase = new DataBase();
             collectionOfDice = new CollectionOfDice();
             rules = new Rules(collectionOfDice);
@@ -40,20 +37,19 @@ namespace Yahtzee.Controller
             if (viewController.ResumeGame())
             {
                 players = dataBase.GetFromFile(rules);
-                roundNbr = GetRoundsPlayed();
+                //RoundNumber = dataBase.GetRoundNumberFromFile();
+                //Date = dataBase.GetDateFromFile();
             }
             else
             {
                 PlayerSetup();
             }
-            return roundNbr;
         }
-        private void RunGame(int startRound)
+        private void RunGame()
         {
-            for (int i = startRound; i <= CategorieModel.GetSize(); i++)
+            for (int i = RoundNumber; i <= CategoryModel.GetSize(); i++)
             {
-
-                if (i != startRound && !viewController.ContinueGame())
+                if (i != RoundNumber && !viewController.ContinueGame())
                 {
                     dataBase.SaveToFile(players);
                     return;
@@ -61,8 +57,8 @@ namespace Yahtzee.Controller
                 RunRound(i);
                 Thread.Sleep(2000);
             }
+            //todo: this instead of players 
             dataBase.SaveToFile(players);
-            return;
         }
 
         private void PlayerSetup()
@@ -79,7 +75,7 @@ namespace Yahtzee.Controller
 
                 } else
                 {
-                    players.Add(new Player(name));
+                    players.Add(new Player(name, rules));
                 }
                 
             }
@@ -142,7 +138,7 @@ namespace Yahtzee.Controller
                 }
             }
 
-            Categorie usedCategorie = robot.CalcBestValue();
+            Category usedCategorie = robot.CalcBestValue();
             bool exist = false;
             int roundScore = robot.GetScore(usedCategorie, out exist);
             if (exist)
@@ -175,8 +171,12 @@ namespace Yahtzee.Controller
             bool categoryUpdated = false;
             while (!categoryUpdated)
             {
-                Categorie categorieToUse = viewController.RenderCategorie();
-                categoryUpdated = updateScoreCardForPlayer(player, categorieToUse);
+                Category categoryToUse = viewController.RenderCategorie();
+                if (!player.GetCategorieUsed(categoryToUse))
+                {
+                    player.AddScore(categoryToUse);
+                    categoryUpdated = true;
+                }
             }
         }
         private bool AnyDiceToRoll()
@@ -192,21 +192,7 @@ namespace Yahtzee.Controller
 
         private int GetRoundsPlayed()
         {
-            if (players.Count > 0)
-                return players[0].GetScoreSize();
-            return 0;
-        }
-
-        private bool updateScoreCardForPlayer(Player player, Categorie categorieToUse)
-        {
-            bool acceptedUpdate = false;
-            if (!player.GetCategorieUsed(categorieToUse))
-            {
-                player.AddScore(categorieToUse, rules.doHave(categorieToUse));
- 
-                acceptedUpdate = true;
-            }
-            return acceptedUpdate;
+            return RoundNumber;
         }
 
     }

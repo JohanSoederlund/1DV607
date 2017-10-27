@@ -6,20 +6,23 @@ using System.Threading.Tasks;
 
 namespace Yahtzee.Model
 {
+    
     class Player
     {
         private List<Score> scoreList;
-        public Player()
+        protected Rules rules;
+        public Player(Rules rules)
         {
-            scoreList = new List<Score>();
+            this.rules = rules;
+            this.scoreList = new List<Score>();
         }
 
-        public Player(string name, bool robot = false) : this()
+        public Player(string name, Rules rules, bool robot = false) : this(rules)
         {
             Name = name;
             IsRobot = robot;
         }
-        public Player(string name, List<Score> scores, bool robot = false) : this(name, robot)
+        public Player(string name, List<Score> scores, Rules rules, bool robot = false) : this(name, rules, robot)
         {
             foreach (Score score in scores)
             {
@@ -31,12 +34,12 @@ namespace Yahtzee.Model
         public string Name { get; set; }
         public bool IsRobot { get; private set; }
 
-        public void AddScore(Categorie categorie, int points)
+        public void AddScore(Category categorie)
         {
-            scoreList.Add(new Score(categorie, points));
+            scoreList.Add(new Score(categorie, rules.GetValueForCategorie(categorie)));
         }
 
-        public int GetScore(Categorie categorie, out bool exist)
+        public int GetScore(Category categorie, out bool exist)
         {
             Score score = scoreList.Find(scoreObj => scoreObj.UsedCategorie == categorie);
 
@@ -68,7 +71,7 @@ namespace Yahtzee.Model
             }
             return sum;
         }
-        public bool GetCategorieUsed(Categorie categorie)
+        public bool GetCategorieUsed(Category categorie)
         {
             Score score = scoreList.Find(scoreObj => scoreObj.UsedCategorie == categorie);
             if (score != null)

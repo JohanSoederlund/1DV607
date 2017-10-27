@@ -9,37 +9,39 @@ namespace Yahtzee.Model
     class Rules
     {
         private CollectionOfDice collectionOfDice;
+        private const int yahtzeeValue = 50;
+        private const int largeStraightValue = 40;
+        private const int smallStraightValue = 30;
+        private const int fullHouseValue = 25;
+
         //private int[] dieValues = { 0, 0, 0, 0, 0, 0 };
         public Rules(CollectionOfDice collectionOfDice)
         {
             this.collectionOfDice = collectionOfDice;
         }
 
-
-        public int doHave(Categorie cat)
+        public int GetValueForCategorie(Category category)
         {
-            switch ((int)cat)
+            switch (category)
             {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5: return Number((int)cat);
-                case 6: return ThreeOfAKind();
-                case 7: return FourOfAKind();
-                case 8: return FullHouse();
-                case 9: return SmallStraight();
-                case 10: return LargeStraight();
-                case 11: return Yahtzee();
-                case 12: return collectionOfDice.GetSum();
-
+                case Category.Aces:
+                case Category.Twos:
+                case Category.Threes:
+                case Category.Fours:
+                case Category.Fives:
+                case Category.Sixes: return SumOfSameCategory(category);
+                case Category.ThreeOfAKind: return ThreeOfAKind();
+                case Category.FourOfAKind: return FourOfAKind();
+                case Category.FullHouse: return FullHouse();
+                case Category.SmallStraight: return SmallStraight();
+                case Category.LargeStraight: return LargeStraight();
+                case Category.Yahtzee: return Yahtzee();
+                case Category.Chance: return collectionOfDice.GetSum();
             }
-
             return 0;
         }
 
-        public int ThreeOfAKind()
+        private int ThreeOfAKind()
         {
 
             if (collectionOfDice.GetMaxNumberOfSameValues() >= 3)
@@ -48,7 +50,7 @@ namespace Yahtzee.Model
             }
             return 0;
         }
-        public int FourOfAKind()
+        private int FourOfAKind()
         {
 
             if (collectionOfDice.GetMaxNumberOfSameValues() >= 4)
@@ -57,25 +59,25 @@ namespace Yahtzee.Model
             }
             return 0;
         }
-        public int FullHouse()
+        private int FullHouse()
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
             int retValue = 0;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
                 if (diceVal[i] == 2)
                 {
-                    for (int j = 0; j < 5; j++)
+                    for (int j = 0; j < 6; j++)
                     {
                         if (diceVal[j] == 3)
-                            retValue = (i + 1) * 2 + (j + 1) * 3;
+                            retValue = fullHouseValue;
                     }
                 }
             }
             return retValue;
         }
 
-        public int SmallStraight()
+        private int SmallStraight()
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
             int retVal = 0;
@@ -95,7 +97,7 @@ namespace Yahtzee.Model
             if (!straight && (diceVal[1] == 1 || diceVal[1] == 2))   // straight 2-5 ?
             {
                 straight = true;
-                for (int i = 2; i < 5; i++)
+                for (int i = 2; i < 6; i++)
                 {
                     if (diceVal[i] != 1 && diceVal[i] != 2)
                     {
@@ -117,56 +119,57 @@ namespace Yahtzee.Model
 
             if (straight)
             {
-                retVal = collectionOfDice.GetSum();
+                retVal = smallStraightValue;
             }
             return retVal;
         }
 
-        public int LargeStraight()
+        private int LargeStraight()
         {
-            int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
-            if (diceVal[0] == 1)   // straight 1-5 ?
+            int[] diceValue = collectionOfDice.GetNumberOfDiceFaceValue();
+            if (diceValue[0] == 1)   // straight 1-5 ?
             {
-                for (int i = 1; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    if (diceVal[i] != 1)
+                    if (diceValue[i] != 1)
                     {
                         return 0;
                     }
                 }
-                return collectionOfDice.GetSum();
+                return largeStraightValue;
             }
-            else if (diceVal[1] == 1)  // straight 2-6 ?
+            else if (diceValue[1] == 1)  // straight 2-6 ?
             {
-                for (int i = 2; i < 6; i++)
+                for (int i = 1; i < 6; i++)
                 {
-                    if (diceVal[i] != 1)
+                    if (diceValue[i] != 1)
                     {
                         return 0;
                     }
                 }
-                return collectionOfDice.GetSum();
+                return largeStraightValue;
             }
             return 0;
         }
 
 
-        public int Yahtzee()
+        private int Yahtzee()
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
             int retVal = 0;
             for (int i = 0; i < 6; i++)
             {
                 if (diceVal[i] == 5)
-                    retVal = diceVal[i] * (i + 1);
+                    retVal = yahtzeeValue;
             }
             return retVal;
         }
 
-        public int Number(int number)
+        private int SumOfSameCategory(Category category)
         {
-            int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
-            return diceVal[number] * (number + 1);
+            int faceValue = (int)category + 1;
+            int[] diceValue = collectionOfDice.GetNumberOfDiceFaceValue();
+            return diceValue[faceValue - 1] * (faceValue);
         }
     }
 
