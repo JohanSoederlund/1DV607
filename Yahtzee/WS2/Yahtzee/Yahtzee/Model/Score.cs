@@ -12,10 +12,6 @@ namespace Yahtzee.Model
 
         public int Points { get; private set; }
 
-        public Score()
-        {
-        }
-
         public Score(Category category, int points)
         {
             UsedCategory = category;

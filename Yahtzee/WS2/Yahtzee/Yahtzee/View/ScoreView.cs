@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
 using Yahtzee.Model;
 
 namespace Yahtzee.View
 {
     class ScoreView : Display
     {
-        public ScoreView()
-        {
-        }
         public void RenderRoundScore(int roundScore, Category usedCategory)
         {
-            PrintMessage("Received " + roundScore + " points for category " + CategoryModel.GetName(usedCategory));
+            PrintMessage("Received " + roundScore + " points for category " + CategoryModel.GetName(usedCategory) + "\n");
         }
         public void RenderScoreBoard(List<Player> players, string date, bool fullList)
         {

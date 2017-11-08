@@ -8,15 +8,18 @@ namespace Yahtzee.Model
 {
     class Robot : Player
     {
+        private Rules rules;
         public Robot(int id, Rules rules)
-            : base("Robot" + id, rules, true)
+            : base("Robot" + id, true)
         {
+            this.rules = rules;
         }
         public Robot(string name, Rules rules, List<Score> scores)
-            : base(name, scores, rules, true)
+            : base(name, scores, true)
         {
+            this.rules = rules;
         }
-        public string Decision { get; private set; }
+
         private bool[] Dice2Roll { get; set; }
 
         public bool[] DecideDiceToRoll(int[] diceVal, int[] die)
@@ -24,6 +27,7 @@ namespace Yahtzee.Model
             // This is the core of the robot strategy
             Dice2Roll = new bool[] { false, false, false, false, false };
 
+            // Priority order for robot how to act on rolled die
             if (Stand()) ;
             else if (KeepThreeOrFourOfAKind(diceVal, die)) ;
             else if (KeepStraightChance(diceVal, die)) ;
@@ -34,50 +38,45 @@ namespace Yahtzee.Model
                 Dice2Roll = new bool[] { true, true, true, true, true };
                 Decision = "ROLL THEM ALL";
             }
-            
             return Dice2Roll;
         }
-
-
-
-        public Category CalcBestValueAndAddToScorelist()
+        public Category SelectCategoryToUse()
         {
             //intentially fall through all options to find best value
             int highestValue = 0;
             Category highCategory = 0;
             int[] getValueForCategories = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-
             foreach (Category category in CategoryModel.GetList())
             {
                 int i = (int)category;
                 getValueForCategories[i] = rules.GetValueForCategory(category);
-                if (category != Category.Chance && !GetCategoryUsed(category) && getValueForCategories[i] >= highestValue)  // always chose the highest score and if many on same highest cat
+                // always chose the highest score. If many on same vale chose highest category
+                if (category != Category.Chance && !GetCategoryUsed(category) && getValueForCategories[i] >= highestValue)
                 {
                     highestValue = getValueForCategories[i];
                     highCategory = category;
                 }
             }
-
+            // Special rule when to chose category chance
             getValueForCategories[12] = rules.GetValueForCategory(Category.Chance);
             if (!GetCategoryUsed(Category.Chance) && getValueForCategories[12] > highestValue && highestValue < 10 && highCategory > Category.Threes && highCategory < Category.Yahtzee)  // Only chance if nothing better or equal
             {
                 highCategory = Category.Chance;
             }
-
-            AddScore(highCategory);
             return highCategory;
         }
 
+
         private bool Stand()
         {
-            if ((rules.GetValueForCategory(Category.Yahtzee) > 0) && !GetCategoryUsed(Category.Yahtzee) ||
-                (rules.GetValueForCategory(Category.FullHouse) > 0) && !GetCategoryUsed(Category.FullHouse) ||
-                (rules.GetValueForCategory(Category.LargeStraight) > 0) && !GetCategoryUsed(Category.LargeStraight) ||
-                (rules.GetValueForCategory(Category.SmallStraight) > 0) && !GetCategoryUsed(Category.SmallStraight))
+            if ((rules.HaveYahtzee()) && !GetCategoryUsed(Category.Yahtzee) ||
+                (rules.HaveFullHouse()) && !GetCategoryUsed(Category.FullHouse) ||
+                (rules.HaveLargeStraight()) && !GetCategoryUsed(Category.LargeStraight) ||
+                (rules.HaveSmallStraight()) && !GetCategoryUsed(Category.SmallStraight))
             {
                 Decision = "Stand";
-                return true;   // stand
+                return true;
             }
             return false;
         }

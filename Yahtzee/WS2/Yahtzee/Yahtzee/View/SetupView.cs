@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Threading;
 
 namespace Yahtzee.View
 {
     class SetupView : Display
     {
-
-        private readonly string mainMenu = "Welcome to Yahtzee! \nThe rules are ... \n";
+        private readonly string mainMenu = "Welcome to Yahtzee! \n\n";
+        private readonly string rules = "Rules can be found at https://en.wikipedia.org/wiki/Yahtzee \n\n";
         public SetupView()
         {
             Console.WriteLine(mainMenu);
+            Console.WriteLine(rules);
         }
         public int NumberOfPlayers()
         {
@@ -28,11 +30,10 @@ namespace Yahtzee.View
                 Console.WriteLine("Invalid input value, you need to give a value between 1 and 5.");
             }
         }
-
-        public string PlayerName()
+        public string PlayerName(int number)
         {
-            {
-                Console.WriteLine("Player what is your name (3-8 characters): ");
+            do{
+                Console.WriteLine("Player number " + number + ": Player what is your name (3-8 characters): ");
                 string input = Console.ReadLine().ToLower();
                 if (input.Length <= 8 && input.Length >= 3)
                 {
@@ -41,16 +42,16 @@ namespace Yahtzee.View
                 Console.WriteLine("Invalid input.");
             } while (true);
         }
-
-        public bool IsRobot()
+        public bool IsRobot(int number)
         {
             do
             {
-                Console.WriteLine("Is this player a robot (y/n)");
+                Console.WriteLine("Player number " + number + ": Is this player a robot (y/n)");
                 string input = Console.ReadLine().ToLower();
                 if (input.CompareTo("y") == 0)
                 {
-                    Console.WriteLine("Robot created successfully");
+                    Console.WriteLine("A robot player created successfully");
+                    Thread.Sleep(1000);
                     return true;
                 }
                 else if (input.CompareTo("n") == 0)
@@ -61,7 +62,5 @@ namespace Yahtzee.View
             } while (true);
            
         }
-
-
     }
 }

@@ -22,7 +22,6 @@ namespace Yahtzee.Model
 
         public List<Dice> Die { get; private set; }
 
-
         public void Roll(bool[] dieToRoll)
         {
             foreach (Dice dice in Die)
@@ -65,26 +64,12 @@ namespace Yahtzee.Model
             }
             return highestNumberOfSame;
         }
-
         public int GetSum()
         {
             int sum = 0;
             foreach (Dice dice in Die)
             {
                 sum += dice.Value;
-            }
-            return sum;
-        }
-
-        public int GetSumOfSame(int value)
-        {
-            int sum = 0;
-            foreach (Dice dice in Die)
-            {
-                if (dice.Value == value)
-                {
-                    sum += dice.Value;
-                }
             }
             return sum;
         }

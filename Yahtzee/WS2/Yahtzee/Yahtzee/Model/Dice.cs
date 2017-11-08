@@ -8,7 +8,6 @@ namespace Yahtzee.Model
 {
     class Dice
     {
-
         private Random random;
         public Dice(int id)
         {
@@ -16,12 +15,8 @@ namespace Yahtzee.Model
             Id = id;
             Value = 0;
         }
-
-
         public int Id { get; private set; }
-
         public int Value { get; private set; }
-
         public void Roll()
         {
             Value = random.Next(1, 7);

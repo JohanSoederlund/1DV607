@@ -1,35 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
-using Yahtzee.Controller;
 
 namespace Yahtzee.Model
 {
     class DataBase
     {
-        private readonly string pathToDB = $"{Environment.CurrentDirectory.Substring(0, (Environment.CurrentDirectory.Length - 9))}DB\\";
-        private readonly string fileName = "Yahtzee";
-        //private string pathToDB = "D:\\1DV607\\DB\\Yahtzee";
-        private JavaScriptSerializer serializer;
+        private static string pathToDB = $"{Environment.CurrentDirectory}\\Database\\";
+        private string fileName = "Yahtzee";
+        
         public DataBase()
         {
-            serializer = new JavaScriptSerializer();
+            //Console.WriteLine("pathDB :   " + pathToDB);
+            //Console.WriteLine("pathDB2 :   " + pathToDB2);
+            Directory.CreateDirectory(pathToDB);
         }
-
-        public Object DataBaseObject { get; private set; }
-
-        public string SaveToFile(DateTime date, int roundNumber, List<Player>players)
+        public string SaveToFile(DateTime date, int roundNumber, List<Player>players) 
         {
 
             string dateStr = date.ToString();
+            dateStr = dateStr.Substring(2, 2) + dateStr.Substring(5, 2) + dateStr.Substring(8, 2) + dateStr.Substring(11, 2) + dateStr.Substring(14, 2) + dateStr.Substring(17, 2) + ".txt";
 
-            dateStr = dateStr.Substring(2,2) + dateStr.Substring(5, 2) + dateStr.Substring(8, 2) + dateStr.Substring(11, 2) + dateStr.Substring(14, 2) + dateStr.Substring(17, 2) + ".txt";
-            //pathToDB
-            StreamWriter file = new StreamWriter($"{ pathToDB + fileName + dateStr }");
+            StreamWriter file = new StreamWriter(pathToDB+fileName+dateStr);
+
             string output = date.ToString();
             output = date.ToString();
             file.WriteLine(output);
@@ -50,7 +43,7 @@ namespace Yahtzee.Model
                 }
             }
             file.Close();
-            return pathToDB;
+            return pathToDB+fileName+ dateStr;
         }
 
         public List<Player> GetFromFile(Rules rules, string fileName, out DateTime date, out int roundNumber)
@@ -58,9 +51,7 @@ namespace Yahtzee.Model
             string line;
             List<Player> players = new List<Player>();
             List<string> items = new List<string>();
-            StreamReader file = new StreamReader($"{ pathToDB + fileName }");
-
-
+            StreamReader file = new StreamReader(pathToDB+fileName);
 
             while((line = file.ReadLine()) != null)
             {
@@ -97,22 +88,20 @@ namespace Yahtzee.Model
                     Robot robot = new Robot(name, rules, scoreList);
                     players.Add(robot);
                 }
-
+                else
+                {
+                    Player player = new Player(name, scoreList);
+                    players.Add(player);
+                }
             }
-          
             return players;
         }
 
-
         public FileInfo[] ListAllGames()
         {
-
-            DirectoryInfo d = new DirectoryInfo($"{ pathToDB }");//Assuming Test is your Folder
+            DirectoryInfo d = new DirectoryInfo(pathToDB);//Assuming Test is your Folder
             FileInfo[] files = d.GetFiles("*.txt"); //Getting Text files
             return files;
         }
-
     }
-
-
 }

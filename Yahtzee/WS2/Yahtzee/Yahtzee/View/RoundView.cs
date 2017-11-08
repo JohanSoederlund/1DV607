@@ -8,10 +8,14 @@ using Yahtzee.Model;
 
 namespace Yahtzee.View
 {
+    enum DisplayType {ViewFullScoreBord = 0, InspectSavedGame, ResumeSavedGame, ViewAvaialbleCategories }
     class RoundView : Display
     {
-
-        public void RenderRound(int roundNumber)
+        private readonly string viewFullScoreBord = "\nDo you want to view the full score board (y) or the short score board (n) of the game (y/n)";
+        private readonly string inspectSavedGame = "\nDo you want to inspect a saved game (y/n)";
+        private readonly string resumeSavedGame = "\nDo you want to resume a saved game (y/n)";
+        private readonly string viewAvailableCategories = "\nDo you want to view available categories (y/n)";
+        public void RenderRoundNumber(int roundNumber)
         {
             PrintMessage("\nRound number " + roundNumber);
         }
@@ -19,23 +23,17 @@ namespace Yahtzee.View
         {
             PrintMessage("\n" + name + " time to play!");
         }
-        public void RenderDie(CollectionOfDice collectionOfDice)
+        public void RenderDie(int[] die)
         {
             string idAndValueOutput = "";
-            if (collectionOfDice.Die == null)
-            {
-                throw new Exception("No die-list");
-            }
             Console.WriteLine("");
-            foreach (Dice dice in collectionOfDice.Die)
+            for (int i=1; i<=die.Length;i++)
             {
-                idAndValueOutput += "Dice number: " + dice.Id + "     Value: " + dice.Value + "\n";
+                idAndValueOutput += "Dice number: " + i + "     Value: " + die[i-1] + "\n";
             }
             Console.Write(idAndValueOutput);
-
         }
-
-        public void RenderDieToRoll(bool[] dieToRoll, string decision)
+        public void RenderDieToRoll(bool[] dieToRoll, string decision="")
         {
             bool stand = true;
             for (int i = 0; i < dieToRoll.Length; i++)
@@ -58,7 +56,6 @@ namespace Yahtzee.View
                 Console.WriteLine("");
             }
         }
-
         public bool[] GetDieToRoll()
         {
             bool[] dieToRoll = { };
@@ -93,29 +90,50 @@ namespace Yahtzee.View
             }
             return dieToRoll;
         }
-
-        public Category RenderCategory()
+        public void RenderUnavailableCategories(List<Category> unavailableCategories)
+        {
+            RenderCategoryList(unavailableCategories);
+        }
+        public Category RenderCategory(List<Category> unavailableCategories)
         {
             int enumLength = CategoryModel.GetSize();
-            PrintMessage("\nSelect number category from this list e.g.(3): ");
-            string output = "";
-
-            foreach (Category category in CategoryModel.GetList())
-            {
-                output += "(" + ((int)category + 1) + ") " + category + "\n";
-            }
             while (true)
             {
                 int value = 0;
-                Console.WriteLine(output);
+                PrintMessage("\nSelect green marked number category from this list e.g.(3): ");
+                RenderCategoryList(unavailableCategories);
+
                 if (Int32.TryParse(Console.ReadLine(), out value) && value >= 1 && value < enumLength+1)
                 {
-                    return CategoryModel.GetCategory(value-1);
+                    bool exist = unavailableCategories.Contains((Category)(value-1));
+                    if (!exist)
+                        return CategoryModel.GetCategory(value-1);
                 }
                 PrintErrorMessage("Invalid input");
             }
         }
-        
+        private void RenderCategoryList(List<Category> unavailableCategories)
+        {
+            string output = "";
+            foreach (Category category in CategoryModel.GetList())
+            {
+                //Category CategoryInList = availableCategories.Find(cat => cat == category);
+                bool exist = unavailableCategories.Contains(category);
+
+                if (exist)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                }
+                output = "(" + ((int)category + 1) + ") " + category;
+
+                Console.WriteLine(output);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
         public bool ContinueGame()
         {
             do
@@ -136,9 +154,26 @@ namespace Yahtzee.View
                 PrintErrorMessage("Invalid input, answer with (y/n).");
             } while (true);
         }
-
-        public bool SelectActivity(string message)
+        public bool SelectActivity(DisplayType displayType, bool ClearAtNo=true)
         {
+            string message = "";
+            switch (displayType)
+            {
+                case DisplayType.InspectSavedGame:
+                    message = inspectSavedGame;
+                    break;
+                case DisplayType.ResumeSavedGame:
+                    message = resumeSavedGame;
+                    break;
+                case DisplayType.ViewFullScoreBord:
+                    message = viewFullScoreBord;
+                    break;
+                case DisplayType.ViewAvaialbleCategories:
+                    message = viewAvailableCategories;
+                    break;
+                default:
+                    break; 
+            }
             do
             {
                 PrintMessage(message);
@@ -150,6 +185,8 @@ namespace Yahtzee.View
                 }
                 else if (input.CompareTo("n") == 0)
                 {
+                    if (ClearAtNo)
+                        Console.Clear();
                     return false;
                 }
                 PrintErrorMessage("Invalid input, answer with (y/n).");
@@ -159,11 +196,18 @@ namespace Yahtzee.View
         {
             PrintMessage("Game saved: " + fileName);
         }
+        public void GameFinished(string winner, int score)
+        {
+            PrintMessage("*************************************************");
+            PrintMessage(" The winner is " + winner + " at score " + score);
+            PrintMessage("*************************************************");
+        }
         public string SelectGame(FileInfo[] files)
         {
             Console.Clear();
-            string selectedFile = "";
-            PrintMessage("\nSelect file from list, enter number before selected file. If no files listed, press ENTER");
+            string selectedFile = ""; 
+
+            PrintMessage("\nSelect file from list, enter number before selected file. \nPress ANY other key to return");
             for (int i = 0; i < files.Length; i++)
             {
                 Console.WriteLine("(" + i + ") " + files[i].Name);
@@ -175,10 +219,6 @@ namespace Yahtzee.View
                 Console.Clear();
                 PrintMessage("\nGame " + files[index].Name + " selected");
                 selectedFile = files[index].Name;
-            }
-            else
-            {
-                PrintErrorMessage("Not a valid input for, regarded as pressed ENTER");
             }
             return selectedFile;
         }

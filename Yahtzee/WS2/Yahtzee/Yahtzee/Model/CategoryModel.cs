@@ -8,8 +8,6 @@ namespace Yahtzee.Model
 {
     class CategoryModel
     {
-        public static string GetName(int index) => Enum.GetName(typeof(Category), index);
-
         public static string GetName(Category category) => Enum.GetName(typeof(Category), category);
 
         public static int GetSize() => Enum.GetNames(typeof(Category)).Length;

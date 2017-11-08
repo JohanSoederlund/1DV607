@@ -10,19 +10,20 @@ namespace Yahtzee.Model
     class Player
     {
         private List<Score> scoreList;
-        protected Rules rules;
-        public Player(Rules rules)
+        public string Decision { get; protected set; }
+
+        public Player()
         {
-            this.rules = rules;
+           
             this.scoreList = new List<Score>();
         }
 
-        public Player(string name, Rules rules, bool robot = false) : this(rules)
+        public Player(string name, bool robot = false): this()
         {
             Name = name;
             IsRobot = robot;
         }
-        public Player(string name, List<Score> scores, Rules rules, bool robot = false) : this(name, rules, robot)
+        public Player(string name, List<Score> scores,  bool robot = false) : this(name, robot)
         {
             foreach (Score score in scores)
             {
@@ -31,12 +32,12 @@ namespace Yahtzee.Model
         }
 
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
         public bool IsRobot { get; private set; }
 
-        public void AddScore(Category category)
+        public void AddScore(Category category, int point)
         {
-            scoreList.Add(new Score(category, rules.GetValueForCategory(category)));
+            scoreList.Add(new Score(category, point));
         }
 
         public int GetScore(Category category, out bool exist)
@@ -56,8 +57,7 @@ namespace Yahtzee.Model
         }
         public Score[] GetScoreList()
         {
-
-            Score[] scoreListCopy = new Score[GetScoreSize()];
+            Score[] scoreListCopy = new Score[scoreList.Count];
 
             scoreList.CopyTo(scoreListCopy, 0);
             return scoreListCopy;
@@ -80,11 +80,18 @@ namespace Yahtzee.Model
             }
             return false;
         }
-
-
-        public int GetScoreSize()
+        public List<Category> GetUsedCategories()
         {
-            return scoreList.Count;
+            List<Category> unavaiableCategories = new List<Category>();
+            foreach (Category category in CategoryModel.GetList())
+            {
+                Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == category);
+                if (score != null)
+                {
+                    unavaiableCategories.Add(category);
+                }
+            }
+            return unavaiableCategories;
         }
     }
 }
