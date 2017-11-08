@@ -15,6 +15,7 @@ namespace Yahtzee.Model
         {
             RoundNumber = 0;
             Date = new DateTime();
+            Date = DateTime.Now;
         }
 
         public int RoundNumber{ get; protected set; }
@@ -29,7 +30,7 @@ namespace Yahtzee.Model
             {
                 return _date;
             }
-            private set
+            protected set
             {
                 _date = value;
             }

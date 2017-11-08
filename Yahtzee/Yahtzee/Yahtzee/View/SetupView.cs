@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Yahtzee.View
 {
-    class SetupView
+    class SetupView : Display
     {
 
         private readonly string mainMenu = "Welcome to Yahtzee! \nThe rules are ... \n";
@@ -16,10 +17,11 @@ namespace Yahtzee.View
         }
         public int NumberOfPlayers()
         {
+            int value = 0;
             Console.WriteLine("How many players (1-5): ");
             while (true)
             {
-                if (Int32.TryParse(Console.ReadLine(), out int value) && value <= 5 && value >= 1)
+                if (Int32.TryParse(Console.ReadLine(), out value) && value <= 5 && value >= 1)
                 {
                     return value;
                 }
@@ -59,6 +61,7 @@ namespace Yahtzee.View
             } while (true);
            
         }
+
 
     }
 }

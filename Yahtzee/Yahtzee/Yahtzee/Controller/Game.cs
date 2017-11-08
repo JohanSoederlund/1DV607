@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Yahtzee.Model;
@@ -21,10 +22,9 @@ namespace Yahtzee.Controller
         public Game()
         {
             InitGame();
-            IncrementRoundNumber();
             RunGame();
         }
-
+        
         private bool[] DieToRoll { get; set; }
 
         private void InitGame()
@@ -34,11 +34,36 @@ namespace Yahtzee.Controller
             rules = new Rules(collectionOfDice);
             viewController = new ViewController();
 
+            string resumeGameFile = "";
+            string viewGameFile = "";
+            if (viewController.ViewGameResult())
+            {
+                FileInfo[] files = dataBase.ListAllGames();
+                viewGameFile = viewController.SelectGame(files);
+            }
+            if (viewGameFile != "")
+            {
+                bool fullList = viewController.ViewFullList();
+                DateTime date = new DateTime();
+                int roundNumber = 0;
+                players = dataBase.GetFromFile(rules, viewGameFile, out date, out roundNumber);
+                Date = date;
+                RoundNumber = roundNumber;
+                viewController.RenderScoreBoard(players, date.ToString(), fullList);
+            }
+
             if (viewController.ResumeGame())
             {
-                players = dataBase.GetFromFile(rules);
-                //RoundNumber = dataBase.GetRoundNumberFromFile();
-                //Date = dataBase.GetDateFromFile();
+                FileInfo[] files = dataBase.ListAllGames();
+                resumeGameFile = viewController.SelectGame(files);
+            }
+            if (resumeGameFile != "")
+            {
+                DateTime date = new DateTime();
+                int roundNumber = 0;
+                players = dataBase.GetFromFile(rules, resumeGameFile, out date, out roundNumber);
+                Date = date;
+                RoundNumber = roundNumber;
             }
             else
             {
@@ -47,18 +72,22 @@ namespace Yahtzee.Controller
         }
         private void RunGame()
         {
-            for (int i = RoundNumber; i <= CategoryModel.GetSize(); i++)
+            string fileName = "";
+            int startRound = RoundNumber+1;
+            for (int i = startRound; i <= CategoryModel.GetSize(); i++)
             {
-                if (i != RoundNumber && !viewController.ContinueGame())
+                if (i != startRound && !viewController.ContinueGame())
                 {
-                    dataBase.SaveToFile(players);
+                    fileName = dataBase.SaveToFile(Date, RoundNumber, players);
+                    viewController.GameSaved(fileName);
                     return;
                 }
                 RunRound(i);
-                Thread.Sleep(2000);
+                IncrementRoundNumber();
             }
             //todo: this instead of players 
-            dataBase.SaveToFile(players);
+            fileName = dataBase.SaveToFile(Date, RoundNumber, players);
+            viewController.GameSaved(fileName);
         }
 
         private void PlayerSetup()
@@ -96,6 +125,7 @@ namespace Yahtzee.Controller
 
         private void RunRound(int roundNumber)
         {
+            viewController.RenderRound(roundNumber);
             foreach (Player player in players)
             {
                 DieToRoll = new bool[] { true, true, true, true, true };
@@ -113,44 +143,44 @@ namespace Yahtzee.Controller
 
         private void RobotRound(Robot robot, int roundNumber)
         {
-            viewController.RenderRound(robot.Name, roundNumber);
+            viewController.RenderRound(robot.Name);
+            // Starting roll
             collectionOfDice.Roll(DieToRoll);
-
             viewController.RenderDie(collectionOfDice);
-            Thread.Sleep(1000);
             DieToRoll = robot.DecideDiceToRoll(collectionOfDice.GetNumberOfDiceFaceValue(), collectionOfDice.GetDie());
             viewController.RenderDieToRoll(DieToRoll, robot.Decision);
+            Thread.Sleep(3000);
 
+            // First reroll
             if (AnyDiceToRoll())
             {
-                Thread.Sleep(1000);
                 collectionOfDice.Roll(DieToRoll);
-
                 viewController.RenderDie(collectionOfDice);
-                Thread.Sleep(1000);
                 DieToRoll = robot.DecideDiceToRoll(collectionOfDice.GetNumberOfDiceFaceValue(), collectionOfDice.GetDie());
                 viewController.RenderDieToRoll(DieToRoll, robot.Decision);
+                Thread.Sleep(3000);
+
+                // Second reroll
                 if (AnyDiceToRoll())
                 {
-                    Thread.Sleep(1000);
                     collectionOfDice.Roll(DieToRoll);
                     viewController.RenderDie(collectionOfDice);
                 }
             }
 
-            Category usedCategorie = robot.CalcBestValue();
+            Category usedCategory = robot.CalcBestValueAndAddToScorelist();
             bool exist = false;
-            int roundScore = robot.GetScore(usedCategorie, out exist);
+            int roundScore = robot.GetScore(usedCategory, out exist);
             if (exist)
             {
-                viewController.RenderRoundScore(roundScore, usedCategorie);
+                viewController.RenderRoundScore(roundScore, usedCategory);
             }
             Thread.Sleep(1000);
         }
 
         private void PlayerRound(Player player, int roundNumber)
         {
-            viewController.RenderRound(player.Name, roundNumber);
+            viewController.RenderRound(player.Name);
             collectionOfDice.Roll(DieToRoll);
 
             viewController.RenderDie(collectionOfDice);
@@ -171,11 +201,14 @@ namespace Yahtzee.Controller
             bool categoryUpdated = false;
             while (!categoryUpdated)
             {
-                Category categoryToUse = viewController.RenderCategorie();
-                if (!player.GetCategorieUsed(categoryToUse))
+                Category categoryToUse = viewController.RenderCategory();
+                if (!player.GetCategoryUsed(categoryToUse))
                 {
                     player.AddScore(categoryToUse);
                     categoryUpdated = true;
+                    bool exist = false; 
+                    int roundScore = player.GetScore(categoryToUse, out exist);
+                    viewController.RenderRoundScore(roundScore, categoryToUse);
                 }
             }
         }

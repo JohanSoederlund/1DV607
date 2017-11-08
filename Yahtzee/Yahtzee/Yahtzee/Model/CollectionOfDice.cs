@@ -9,11 +9,11 @@ namespace Yahtzee.Model
 {
     class CollectionOfDice
     {
-       
+        public const int NoOfDie = 5;
         public CollectionOfDice()
         {
             Die = new List<Dice>();
-            for (int i = 1; i < 6; i++)
+            for (int i = 1; i <= NoOfDie; i++)
             {
                 Thread.Sleep(20);
                 Die.Add(new Dice(i));

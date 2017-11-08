@@ -2,22 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using Yahtzee.Model;
 
 namespace Yahtzee.View
 {
-    class ScoreView
+    class ScoreView : Display
     {
         public ScoreView()
         {
         }
-        public void RenderRoundScore(int roundScore, Category usedCategorie)
+        public void RenderRoundScore(int roundScore, Category usedCategory)
         {
-            Console.WriteLine("Recieved " + roundScore + " points for categorie " + CategoryModel.GetName(usedCategorie));
+            PrintMessage("Received " + roundScore + " points for category " + CategoryModel.GetName(usedCategory));
         }
-        public void RenderScoreBoard(List<Player> players)
+        public void RenderScoreBoard(List<Player> players, string date, bool fullList)
         {
+            if (date != null)
+                Console.WriteLine("\nGame played " + date);
+
             string divider = "|";
             string end = "";
             Console.ForegroundColor = ConsoleColor.Green;
@@ -38,23 +42,29 @@ namespace Yahtzee.View
             }
             Console.WriteLine(" |\n" + divider);
 
-            foreach (Category categorie in CategoryModel.GetList())
+            if (fullList)
             {
-                Console.Write("|" + categorie + "\t");
-                if (categorie <= Category.Sixes || categorie == Category.Chance)
-                    Console.Write("\t");
-                foreach (Player player in players)
+                foreach (Category category in CategoryModel.GetList())
                 {
-                    bool exist;
-                    Console.Write(player.GetScore(categorie, out exist) + "\t");
+                    Console.Write("|" + category + "\t");
+                    if (category <= Category.Sixes || category == Category.Chance)
+                        Console.Write("\t");
+                    foreach (Player player in players)
+                    {
+                        bool exist;
+                        Console.Write(player.GetScore(category, out exist) + "\t");
+                    }
+                    Console.WriteLine(" |\n" + divider);
                 }
-                Console.WriteLine(" |\n" + divider);
+                Console.Write("|");
             }
-            Console.Write("|Sum\t\t");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write("Sum\t\t");
             foreach (Player player in players)
             {
                 Console.Write(player.GetTotalScore() + "\t");
             }
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine(" |\n^" + end+"^");
             Console.ResetColor();
         }

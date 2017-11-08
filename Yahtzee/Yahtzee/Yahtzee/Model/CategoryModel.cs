@@ -10,13 +10,11 @@ namespace Yahtzee.Model
     {
         public static string GetName(int index) => Enum.GetName(typeof(Category), index);
 
-        public static string GetName(Category categorie) => Enum.GetName(typeof(Category), categorie);
+        public static string GetName(Category category) => Enum.GetName(typeof(Category), category);
 
         public static int GetSize() => Enum.GetNames(typeof(Category)).Length;
-        public static Category GetCategorie(int index) => (Category)index;
+        public static Category GetCategory(int index) => (Category)index;
 
         public static Array GetList() => Enum.GetValues(typeof(Category));
-
-      //  public static int GetIndex(Categorie categorie) => (int)categorie;
     }
 }

@@ -34,14 +34,14 @@ namespace Yahtzee.Model
         public string Name { get; set; }
         public bool IsRobot { get; private set; }
 
-        public void AddScore(Category categorie)
+        public void AddScore(Category category)
         {
-            scoreList.Add(new Score(categorie, rules.GetValueForCategorie(categorie)));
+            scoreList.Add(new Score(category, rules.GetValueForCategory(category)));
         }
 
-        public int GetScore(Category categorie, out bool exist)
+        public int GetScore(Category category, out bool exist)
         {
-            Score score = scoreList.Find(scoreObj => scoreObj.UsedCategorie == categorie);
+            Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == category);
 
             if (score != null)
             {
@@ -71,9 +71,9 @@ namespace Yahtzee.Model
             }
             return sum;
         }
-        public bool GetCategorieUsed(Category categorie)
+        public bool GetCategoryUsed(Category category)
         {
-            Score score = scoreList.Find(scoreObj => scoreObj.UsedCategorie == categorie);
+            Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == category);
             if (score != null)
             {
                 return true;

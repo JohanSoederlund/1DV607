@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
+using System.IO;
 using Yahtzee.Model;
 
 namespace Yahtzee.View
@@ -40,11 +40,15 @@ namespace Yahtzee.View
             }
             return setupView.PlayerName();
         }
-        
 
-        public void RenderRound(string name, int roundNumber)
+        public void RenderRound(int roundNumber)
         {
-            roundView.RenderRound(name, roundNumber);
+            roundView.RenderRound(roundNumber);
+
+        }
+        public void RenderRound(string name)
+        {
+            roundView.RenderRound(name);
             
         }
 
@@ -58,9 +62,9 @@ namespace Yahtzee.View
             roundView.RenderDie(collectionOfDice);
         }
 
-        public Category RenderCategorie()
+        public Category RenderCategory()
         {
-            return roundView.RenderCategorie();
+            return roundView.RenderCategory();
         }
 
         public void RenderDieToRoll(bool[] DieToRoll, string decision)
@@ -68,9 +72,9 @@ namespace Yahtzee.View
             roundView.RenderDieToRoll(DieToRoll, decision);
         }
 
-        public void RenderRoundScore(int roundScore, Category usedCategorie)
+        public void RenderRoundScore(int roundScore, Category usedCategory)
         {
-            scoreView.RenderRoundScore(roundScore, usedCategorie);
+            scoreView.RenderRoundScore(roundScore, usedCategory);
         }
 
         public bool ContinueGame()
@@ -79,13 +83,29 @@ namespace Yahtzee.View
         }
         public bool ResumeGame()
         {
-            return roundView.ResumeGame();
+            return roundView.SelectActivity("\nDo you want to resume a saved game (y/n)");
+        }
+        public bool ViewGameResult()
+        {
+            return roundView.SelectActivity("\nDo you want to inspect a saved game (y/n)");
+        }
+        public bool ViewFullList()
+        {
+            return roundView.SelectActivity("\nDo you want to view the full score board (y) or the short score borard (n) of the game (y/n)");
+        }
+        public void GameSaved(string fileName)
+        {
+            roundView.GameSaved(fileName);
         }
 
-
-        public void RenderScoreBoard(List<Player> players)
+        public void RenderScoreBoard(List<Player> players, string date = null, bool fullList = true)
         {
-            scoreView.RenderScoreBoard(players);
+            scoreView.RenderScoreBoard(players, date, fullList);
+        }
+
+        public string SelectGame(FileInfo[] files)
+        {
+            return roundView.SelectGame(files);
         }
     }
 }

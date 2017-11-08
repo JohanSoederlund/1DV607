@@ -20,7 +20,7 @@ namespace Yahtzee.Model
             this.collectionOfDice = collectionOfDice;
         }
 
-        public int GetValueForCategorie(Category category)
+        public int GetValueForCategory(Category category)
         {
             switch (category)
             {
@@ -63,11 +63,11 @@ namespace Yahtzee.Model
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
             int retValue = 0;
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < diceVal.Length; i++)
             {
                 if (diceVal[i] == 2)
                 {
-                    for (int j = 0; j < 6; j++)
+                    for (int j = 0; j < diceVal.Length; j++)
                     {
                         if (diceVal[j] == 3)
                             retValue = fullHouseValue;
@@ -97,7 +97,7 @@ namespace Yahtzee.Model
             if (!straight && (diceVal[1] == 1 || diceVal[1] == 2))   // straight 2-5 ?
             {
                 straight = true;
-                for (int i = 2; i < 6; i++)
+                for (int i = 2; i < diceVal.Length; i++)
                 {
                     if (diceVal[i] != 1 && diceVal[i] != 2)
                     {
@@ -108,7 +108,7 @@ namespace Yahtzee.Model
             if (!straight && (diceVal[2] == 1 || diceVal[2] == 2))   // straight 3-6 ?
             {
                 straight = true;
-                for (int i = 3; i < 6; i++)
+                for (int i = 3; i < diceVal.Length; i++)
                 {
                     if (diceVal[i] != 1 && diceVal[i] != 2)
                     {
@@ -129,7 +129,7 @@ namespace Yahtzee.Model
             int[] diceValue = collectionOfDice.GetNumberOfDiceFaceValue();
             if (diceValue[0] == 1)   // straight 1-5 ?
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < diceValue.Length-1; i++)
                 {
                     if (diceValue[i] != 1)
                     {
@@ -140,7 +140,7 @@ namespace Yahtzee.Model
             }
             else if (diceValue[1] == 1)  // straight 2-6 ?
             {
-                for (int i = 1; i < 6; i++)
+                for (int i = 1; i < diceValue.Length; i++)
                 {
                     if (diceValue[i] != 1)
                     {
@@ -157,7 +157,7 @@ namespace Yahtzee.Model
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
             int retVal = 0;
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < diceVal.Length; i++)
             {
                 if (diceVal[i] == 5)
                     retVal = yahtzeeValue;
