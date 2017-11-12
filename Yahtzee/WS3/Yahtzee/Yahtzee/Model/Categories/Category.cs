@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yahtzee.Model.Categories
 {
-    abstract class Category
+    public abstract class Category
     {
 
         public enum Type { }
@@ -35,6 +35,17 @@ namespace Yahtzee.Model.Categories
         //abstract public int GetValue(int index);
 
         public abstract Type GetCategory(int i);
+
+
+        abstract public Type SmallStraight();
+        abstract public Type LargeStraight();
+        abstract public Type FullHouse();
+        abstract public Type Yahtzee();
+
+        abstract public Type Threes();
+        abstract public Type Sixes();
+        abstract public Type Chance();
+
 
     }
 

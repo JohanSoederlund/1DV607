@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Yahtzee.Model.Categories;
 using Yahtzee.Model.Rules;
 
 namespace Yahtzee.Model
 {
     class DataBase
     {
-        private static string pathToDB = $"{Environment.CurrentDirectory}\\Database\\";
-        private string fileName = "Yahtzee";
-        
-        public DataBase()
+        private readonly string pathToDB = $"{Environment.CurrentDirectory}\\Database\\";
+        private string fileName;
+
+        private IRules rules;
+        private GameType gameType;
+        private Category category;
+
+        public DataBase(Category category, IRules rules, GameType gameType)
         {
-            //Console.WriteLine("pathDB :   " + pathToDB);
-            //Console.WriteLine("pathDB2 :   " + pathToDB2);
+            this.category = category;
+            this.gameType = gameType;
+            this.rules = rules;
             Directory.CreateDirectory(pathToDB);
         }
         public string SaveToFile(DateTime date, int roundNumber, List<Player>players) 
@@ -80,13 +86,13 @@ namespace Yahtzee.Model
                 {
                     scoreItems = items[indexStartPlayer + 2 + j].Split('|');
                     int point = Int32.Parse(scoreItems[0]);
-                    Category cat = (Category)Enum.Parse(typeof(Category), (scoreItems[1]));
+                    Category.Type cat = (Category.Type)Enum.Parse(typeof(Category), (scoreItems[1]));
                     Score score = new Score(cat, point);
                     scoreList.Add(score);
                 }
                 if (isRobot)
                 {
-                    Robot robot = new Robot(name, rules, scoreList);
+                    Robot robot = new Robot(name, rules, category, scoreList);
                     players.Add(robot);
                 }
                 else

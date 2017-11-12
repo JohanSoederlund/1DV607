@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Model.Rules
 {
@@ -21,44 +22,46 @@ namespace Yahtzee.Model.Rules
             this.collectionOfDice = collectionOfDice;
         }
 
-        public int GetValueForCategory(Category category)
+        public int GetValueForCategory( Category.Type category)
         {
             int retValueForCategory = 0;  // Default value if condition for category not met
-            switch (category)
+            CategoryYahtzee.Type categoryYahtzee = (CategoryYahtzee.Type)category;
+
+            switch (categoryYahtzee)
             {
-                case Category.Aces:
-                case Category.Twos:
-                case Category.Threes:
-                case Category.Fours:
-                case Category.Fives:
-                case Category.Sixes:
-                    retValueForCategory = SumOfSameCategory(category);
+                case  CategoryYahtzee.Type.Aces:
+                case  CategoryYahtzee.Type.Twos:
+                case  CategoryYahtzee.Type.Threes:
+                case  CategoryYahtzee.Type.Fours:
+                case  CategoryYahtzee.Type.Fives:
+                case  CategoryYahtzee.Type.Sixes:
+                    retValueForCategory = SumOfSameCategory(categoryYahtzee);
                     break;
-                case Category.ThreeOfAKind:
+                case  CategoryYahtzee.Type.ThreeOfAKind:
                     if (HaveThreeOfAKind())
                         retValueForCategory = ThreeOfAKind();
                     break;
-                case Category.FourOfAKind:
+                case  CategoryYahtzee.Type.FourOfAKind:
                     if (HaveFourOfAKind())
                         retValueForCategory = FourOfAKind();
                     break;
-                case Category.FullHouse:
+                case  CategoryYahtzee.Type.FullHouse:
                     if (HaveFullHouse())
                         retValueForCategory = FullHouse();
                     break;
-                case Category.SmallStraight:
+                case  CategoryYahtzee.Type.SmallStraight:
                     if (HaveSmallStraight())
                         retValueForCategory = SmallStraight();
                     break;
-                case Category.LargeStraight:
+                case  CategoryYahtzee.Type.LargeStraight:
                     if (HaveLargeStraight())
                         retValueForCategory = LargeStraight();
                     break;
-                case Category.Yahtzee:
+                case  CategoryYahtzee.Type.Yahtzee:
                     if (HaveYahtzee())
                         retValueForCategory = Yahtzee();
                     break;
-                case Category.Chance:
+                case  CategoryYahtzee.Type.Chance:
                     retValueForCategory = collectionOfDice.GetSum();
                     break;
             }
@@ -202,7 +205,7 @@ namespace Yahtzee.Model.Rules
         {
             return yahtzeeValue;
         }
-        private int SumOfSameCategory(Category category)
+        private int SumOfSameCategory(CategoryYahtzee.Type category)
         {
             int faceValue = (int)category + 1;
             int[] diceValue = collectionOfDice.GetNumberOfDiceFaceValue();

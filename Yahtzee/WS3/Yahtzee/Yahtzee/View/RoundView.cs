@@ -135,7 +135,7 @@ namespace Yahtzee.View
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                output = "(" + (cat. + 1) + ") " + category;
+                output = "(" + category.GetValue(cat+ 1) + ") " + category;
 
                 Console.WriteLine(output);
                 Console.ForegroundColor = ConsoleColor.White;

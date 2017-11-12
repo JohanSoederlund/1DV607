@@ -44,15 +44,15 @@ namespace Yahtzee.View
 
             if (fullList)
             {
-                foreach (Category category in CategoryModel.GetList())
+                foreach (Category.Type cat in category.GetValues())
                 {
                     Console.Write("|" + category + "\t");
-                    if (category <= Category.Sixes || category == Category.Chance)
+                    if (cat <= category.Sixes() || cat == category.Chance())
                         Console.Write("\t");
                     foreach (Player player in players)
                     {
                         bool exist;
-                        Console.Write(player.GetScore(category, out exist) + "\t");
+                        Console.Write(player.GetScore(cat, out exist) + "\t");
                     }
                     Console.WriteLine(" |\n" + divider);
                 }

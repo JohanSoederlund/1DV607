@@ -36,14 +36,12 @@ namespace Yahtzee.Controller
         private void InitGame()
         {
             GameType gameType = new MainMenu().RenderStartMenu();
-            dataBase = new DataBase();
+
             collectionOfDice = new CollectionOfDice();
             factory = new Factory(gameType, collectionOfDice);
             rules = factory.GetRules();
             category = factory.GetCategory();
-            //factory
-            //factory.rules
-            //rules = new Rules(collectionOfDice);
+            dataBase = new DataBase(category, rules, gameType);
             viewController = new ViewController(category);
 
             string resumeGameFile = "";
@@ -104,7 +102,7 @@ namespace Yahtzee.Controller
                 string name = viewController.PlayerName(i, out robot);
                 if (robot)
                 {
-                    players.Add(new Robot(GetNumberOfRobots() + 1, rules));
+                    players.Add(new Robot(GetNumberOfRobots() + 1, rules, category));
 
                 }
                 else
@@ -120,7 +118,7 @@ namespace Yahtzee.Controller
         {
             string fileName = "";
             int startRound = RoundNumber+1;
-            for (int i = startRound; i <= CategoryModel.GetSize(); i++)
+            for (int i = startRound; i <= category.Length(); i++)
             {
                 if (i != startRound && !viewController.ContinueGame())
                 {
@@ -148,7 +146,7 @@ namespace Yahtzee.Controller
         private void PlayRound(Player player)
         {
             Robot robot = player as Robot;
-            Category categoryToUse = Category.Chance;
+            Category.Type categoryToUse = category.Chance();
 
             viewController.RenderRound(player.Name);
             for (int rollNumber = 1; rollNumber <= 3; rollNumber++)
@@ -166,7 +164,7 @@ namespace Yahtzee.Controller
                         else
                         {
                             if (rollNumber == 1)
-                                viewController.RenderUnavailableCategories(player.GetUsedCategories());
+                                viewController.RenderUnavailableCategories(player.GetUsedCategories(category));
                             DieToRoll = viewController.GetDieToRoll();
                         }
                         viewController.RenderDieToRoll(DieToRoll, player.Decision);
@@ -179,7 +177,7 @@ namespace Yahtzee.Controller
             }
             else
             {
-                categoryToUse = viewController.RenderCategory(player.GetUsedCategories());
+                categoryToUse = viewController.RenderCategory(player.GetUsedCategories(category));
             }
             player.AddScore(categoryToUse, rules.GetValueForCategory(categoryToUse));
 

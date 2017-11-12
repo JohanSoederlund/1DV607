@@ -32,6 +32,35 @@ namespace Yahtzee.Model.Categories
         public override int GetValue(object type) { return (int)type; }
 
         public override Category.Type GetCategory(int i) { return (Category.Type)i; }
+
+        public override Category.Type Yahtzee()
+        {
+            return (Category.Type)Type.Yahtzee;
+        }
+        public override Category.Type SmallStraight()
+        {
+            return (Category.Type)Type.SmallStraight;
+        }
+        public override Category.Type LargeStraight()
+        {
+            return (Category.Type)Type.LargeStraight;
+        }
+        public override Category.Type FullHouse()
+        {
+            return (Category.Type)Type.FullHouse;
+        }
+        public override Category.Type Chance()
+        {
+            return (Category.Type)Type.Chance;
+        }
+        public override Category.Type Threes()
+        {
+            return (Category.Type)Type.Threes;
+        }
+        public override Category.Type Sixes()
+        {
+            return (Category.Type)Type.Sixes;
+        }
     }
 }
 

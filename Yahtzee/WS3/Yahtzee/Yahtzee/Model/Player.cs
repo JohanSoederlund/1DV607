@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Model
 {
@@ -35,12 +36,12 @@ namespace Yahtzee.Model
         public string Name { get; private set; }
         public bool IsRobot { get; private set; }
 
-        public void AddScore(Category category, int point)
+        public void AddScore(Category.Type category, int point)
         {
             scoreList.Add(new Score(category, point));
         }
 
-        public int GetScore(Category category, out bool exist)
+        public int GetScore(Category.Type category, out bool exist)
         {
             Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == category);
 
@@ -71,7 +72,7 @@ namespace Yahtzee.Model
             }
             return sum;
         }
-        public bool GetCategoryUsed(Category category)
+        public bool GetCategoryUsed(Category.Type category)
         {
             Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == category);
             if (score != null)
@@ -80,15 +81,15 @@ namespace Yahtzee.Model
             }
             return false;
         }
-        public List<Category> GetUsedCategories()
+        public List<Category.Type> GetUsedCategories(Category category)
         {
-            List<Category> unavaiableCategories = new List<Category>();
-            foreach (Category category in CategoryModel.GetList())
+            List<Category.Type> unavaiableCategories = new List<Category.Type>();
+            foreach (Category.Type cat in category.GetValues())
             {
-                Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == category);
+                Score score = scoreList.Find(scoreObj => scoreObj.UsedCategory == cat);
                 if (score != null)
                 {
-                    unavaiableCategories.Add(category);
+                    unavaiableCategories.Add(cat);
                 }
             }
             return unavaiableCategories;

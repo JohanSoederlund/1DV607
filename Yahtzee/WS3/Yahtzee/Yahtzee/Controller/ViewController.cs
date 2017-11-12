@@ -60,14 +60,14 @@ namespace Yahtzee.View
         {
             roundView.RenderDie(die);
         }
-        public void RenderUnavailableCategories(List<Category> unavailableCategories)
+        public void RenderUnavailableCategories(List<Category.Type> unavailableCategories)
         {
             if (roundView.SelectActivity(DisplayType.ViewAvaialbleCategories, false))
             {
                 roundView.RenderUnavailableCategories(unavailableCategories);
             }
         }
-        public Category RenderCategory(List<Category> unavailableCategories)
+        public Category.Type RenderCategory(List<Category.Type> unavailableCategories)
         {
             return roundView.RenderCategory(unavailableCategories);
         }
@@ -76,7 +76,7 @@ namespace Yahtzee.View
             roundView.RenderDieToRoll(DieToRoll, decision);
             Thread.Sleep(2000);
         }
-        public void RenderRoundScore(int roundScore, Category usedCategory)
+        public void RenderRoundScore(int roundScore, Category.Type usedCategory)
         {
             scoreView.RenderRoundScore(roundScore, usedCategory);
         }
