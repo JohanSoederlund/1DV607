@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Yahtzee.Model
 {
-    public class CollectionOfDice
+    class CollectionOfDice
     {
         public const int NoOfDie = 5;
         public CollectionOfDice()

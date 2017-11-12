@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yahtzee.Model.Rules
 {
-    class YatzyRules : IRules
-    {
 
-
-    }
+    class YatzyRules { }
+    
 }

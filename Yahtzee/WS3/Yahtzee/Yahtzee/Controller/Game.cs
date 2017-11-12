@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Yahtzee.Model;
 using Yahtzee.View;
 using Yahtzee.Model.Rules;
+using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Controller
 {
@@ -18,7 +19,7 @@ namespace Yahtzee.Controller
         private Factory factory;
         private IRules rules;
         private CollectionOfDice collectionOfDice;
-
+        private Category category;
         private ViewController viewController;
 
         private DateTime Date { get; set; }
@@ -39,10 +40,11 @@ namespace Yahtzee.Controller
             collectionOfDice = new CollectionOfDice();
             factory = new Factory(gameType, collectionOfDice);
             rules = factory.GetRules();
+            category = factory.GetCategory();
             //factory
             //factory.rules
             //rules = new Rules(collectionOfDice);
-            viewController = new ViewController();
+            viewController = new ViewController(category);
 
             string resumeGameFile = "";
             string viewGameFile = "";

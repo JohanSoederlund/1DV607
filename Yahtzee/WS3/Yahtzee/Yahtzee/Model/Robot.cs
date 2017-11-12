@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Yahtzee.Model.Rules;
 
 namespace Yahtzee.Model
 {
     class Robot : Player
     {
-        private Rules rules;
-        public Robot(int id, Rules rules)
+        private IRules rules;
+        public Robot(int id, IRules rules)
             : base("Robot" + id, true)
         {
             this.rules = rules;
         }
-        public Robot(string name, Rules rules, List<Score> scores)
+        public Robot(string name, IRules rules, List<Score> scores)
             : base(name, scores, true)
         {
             this.rules = rules;

@@ -6,21 +6,23 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 using Yahtzee.Model;
+using Yahtzee.Model.Categories;
 
 namespace Yahtzee.View
 {
+
     class ViewController
     {
         private ScoreView scoreView;
         private SetupView setupView;
         private RoundView roundView;
+        private Category category;
 
-        
-        public ViewController()
+        public ViewController(Category category)
         {
             setupView = new SetupView();
-            scoreView = new ScoreView();
-            roundView = new RoundView();
+            scoreView = new ScoreView(category);
+            roundView = new RoundView(category);
            }
 
         public int NumberOfPlayers()

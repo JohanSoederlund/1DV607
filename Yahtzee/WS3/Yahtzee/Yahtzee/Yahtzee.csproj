@@ -48,18 +48,24 @@
   <ItemGroup>
     <Compile Include="Controller\Game.cs" />
     <Compile Include="Controller\ViewController.cs" />
-    <Compile Include="Model\Category.cs" />
-    <Compile Include="Model\CategoryModel.cs" />
+    <Compile Include="Model\Categories\Category.cs" />
+    <Compile Include="Model\Categories\CategoryYahtzee.cs" />
+    <Compile Include="Model\Categories\CategoryYatzy.cs" />
     <Compile Include="Model\CollectionOfDice.cs" />
     <Compile Include="Model\DataBase.cs" />
     <Compile Include="Model\Dice.cs" />
+    <Compile Include="Model\Factory.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Robot.cs" />
-    <Compile Include="Model\Rules.cs" />
+    <Compile Include="Model\Rules\GameType.cs" />
+    <Compile Include="Model\Rules\IRules.cs" />
+    <Compile Include="Model\Rules\YahtzeeRules.cs" />
+    <Compile Include="Model\Rules\YatzyRules.cs" />
     <Compile Include="Model\Score.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Display.cs" />
+    <Compile Include="View\MainMenu.cs" />
     <Compile Include="View\RoundView.cs" />
     <Compile Include="View\ScoreView.cs" />
     <Compile Include="View\SetupView.cs" />
@@ -68,5 +74,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

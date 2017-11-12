@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.Threading.Tasks;
 using Yahtzee.Model;
+using Yahtzee.Model.Categories;
 
 namespace Yahtzee.View
 {
@@ -15,6 +16,12 @@ namespace Yahtzee.View
         private readonly string inspectSavedGame = "\nDo you want to inspect a saved game (y/n)";
         private readonly string resumeSavedGame = "\nDo you want to resume a saved game (y/n)";
         private readonly string viewAvailableCategories = "\nDo you want to view available categories (y/n)";
+
+        private Category category;
+        public RoundView(Category category)
+        {
+            this.category = category;
+        }
         public void RenderRoundNumber(int roundNumber)
         {
             PrintMessage("\nRound number " + roundNumber);
@@ -90,13 +97,13 @@ namespace Yahtzee.View
             }
             return dieToRoll;
         }
-        public void RenderUnavailableCategories(List<Category> unavailableCategories)
+        public void RenderUnavailableCategories(List<Category.Type> unavailableCategories)
         {
             RenderCategoryList(unavailableCategories);
         }
-        public Category RenderCategory(List<Category> unavailableCategories)
+        public Category.Type RenderCategory(List<Category.Type> unavailableCategories)
         {
-            int enumLength = CategoryModel.GetSize();
+            int enumLength = category.Length();
             while (true)
             {
                 int value = 0;
@@ -105,20 +112,20 @@ namespace Yahtzee.View
 
                 if (Int32.TryParse(Console.ReadLine(), out value) && value >= 1 && value < enumLength+1)
                 {
-                    bool exist = unavailableCategories.Contains((Category)(value-1));
+                    bool exist = unavailableCategories.Contains(category.GetCategory(value -1));
                     if (!exist)
-                        return CategoryModel.GetCategory(value-1);
+                        return category.GetCategory(value-1);
                 }
                 PrintErrorMessage("Invalid input");
             }
         }
-        private void RenderCategoryList(List<Category> unavailableCategories)
+        private void RenderCategoryList(List<Category.Type> unavailableCategories)
         {
             string output = "";
-            foreach (Category category in CategoryModel.GetList())
+            foreach (Category.Type cat in category.GetValues())
             {
                 //Category CategoryInList = availableCategories.Find(cat => cat == category);
-                bool exist = unavailableCategories.Contains(category);
+                bool exist = unavailableCategories.Contains(cat);
 
                 if (exist)
                 {
@@ -128,7 +135,7 @@ namespace Yahtzee.View
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                output = "(" + ((int)category + 1) + ") " + category;
+                output = "(" + (cat. + 1) + ") " + category;
 
                 Console.WriteLine(output);
                 Console.ForegroundColor = ConsoleColor.White;

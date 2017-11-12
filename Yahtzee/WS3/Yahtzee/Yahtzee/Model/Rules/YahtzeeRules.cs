@@ -9,6 +9,7 @@ namespace Yahtzee.Model.Rules
     class YahtzeeRules : IRules
     {
 
+
         private CollectionOfDice collectionOfDice;
         private const int yahtzeeValue = 50;
         private const int largeStraightValue = 40;

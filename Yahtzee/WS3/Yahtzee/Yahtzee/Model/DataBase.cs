@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Yahtzee.Model.Rules;
 
 namespace Yahtzee.Model
 {
@@ -46,7 +47,7 @@ namespace Yahtzee.Model
             return pathToDB+fileName+ dateStr;
         }
 
-        public List<Player> GetFromFile(Rules rules, string fileName, out DateTime date, out int roundNumber)
+        public List<Player> GetFromFile(IRules rules, string fileName, out DateTime date, out int roundNumber)
         {
             string line;
             List<Player> players = new List<Player>();
