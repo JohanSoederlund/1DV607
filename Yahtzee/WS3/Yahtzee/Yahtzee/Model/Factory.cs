@@ -37,7 +37,7 @@ namespace Yahtzee.Model
                 category = new CategoryYahtzee();
             } else if (gameType == GameType.Yatzy)
             {
-                //rules = new YatzyRules(collectionOfDice);
+                rules = new YatzyRules(collectionOfDice);
                 category = new CategoryYatzy();
             }
         }

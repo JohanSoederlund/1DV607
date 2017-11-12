@@ -12,10 +12,10 @@ namespace Yahtzee.View
     enum DisplayType {ViewFullScoreBord = 0, InspectSavedGame, ResumeSavedGame, ViewAvaialbleCategories }
     class RoundView : Display
     {
-        private readonly string viewFullScoreBord = "\nDo you want to view the full score board (y) or the short score board (n) of the game (y/n)";
-        private readonly string inspectSavedGame = "\nDo you want to inspect a saved game (y/n)";
-        private readonly string resumeSavedGame = "\nDo you want to resume a saved game (y/n)";
-        private readonly string viewAvailableCategories = "\nDo you want to view available categories (y/n)";
+        private readonly string viewFullScoreBord = "\n\t Do you want to view the full score board (y) or the short score board (n) of the game (y/n)";
+        private readonly string inspectSavedGame = "\n\t Do you want to inspect a saved game (y/n)";
+        private readonly string resumeSavedGame = "\n\t Do you want to resume a saved game (y/n)";
+        private readonly string viewAvailableCategories = "\n\t Do you want to view available categories (y/n)";
 
         private Category category;
         public RoundView(Category category)
@@ -135,7 +135,7 @@ namespace Yahtzee.View
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                 }
-                output = "(" + category.GetValue(cat+ 1) + ") " + category;
+                output = "(" + category.GetValue(cat+ 1) + ") " + category.GetName(cat);
 
                 Console.WriteLine(output);
                 Console.ForegroundColor = ConsoleColor.White;
@@ -196,6 +196,7 @@ namespace Yahtzee.View
                         Console.Clear();
                     return false;
                 }
+                Console.Clear();
                 PrintErrorMessage("Invalid input, answer with (y/n).");
             } while (true);
         }

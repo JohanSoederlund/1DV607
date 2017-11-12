@@ -57,6 +57,7 @@
     <Compile Include="Model\Factory.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Robot.cs" />
+    <Compile Include="Model\Rules\BaseRules.cs" />
     <Compile Include="Model\Rules\GameType.cs" />
     <Compile Include="Model\Rules\IRules.cs" />
     <Compile Include="Model\Rules\YahtzeeRules.cs" />

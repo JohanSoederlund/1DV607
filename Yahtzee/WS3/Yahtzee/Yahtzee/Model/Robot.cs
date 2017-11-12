@@ -50,7 +50,7 @@ namespace Yahtzee.Model
             //intentially fall through all options to find best value
             int highestValue = 0;
             Category.Type highCategory = 0;
-            int[] getValueForCategories = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            int[] getValueForCategories = new int[category.Length()];
 
             foreach (Category.Type cat in category.GetValues())
             {
@@ -77,8 +77,8 @@ namespace Yahtzee.Model
 
         private bool Stand()
         {
-            if ((rules.HaveYahtzee()) && !GetCategoryUsed(category.Yahtzee()) ||
-                (rules.HaveFullHouse()) && !GetCategoryUsed(category.FullHouse()) ||
+            if ((rules.BaseRules.HaveYahtzee()) && !GetCategoryUsed(category.Yahtzee()) ||
+                (rules.BaseRules.HaveFullHouse()) && !GetCategoryUsed(category.FullHouse()) ||
                 (rules.HaveLargeStraight()) && !GetCategoryUsed(category.LargeStraight()) ||
                 (rules.HaveSmallStraight()) && !GetCategoryUsed(category.SmallStraight()))
             {

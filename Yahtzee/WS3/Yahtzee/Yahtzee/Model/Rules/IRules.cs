@@ -7,19 +7,22 @@ using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Model.Rules
 {
-    public interface IRules
+    interface IRules
     {
 
         int GetValueForCategory(Category.Type category);
-
-        bool HaveYahtzee();
 
         bool HaveLargeStraight();
 
         bool HaveSmallStraight();
 
+        BaseRules BaseRules { get; set; }
+
+        /*
+        bool HaveYahtzee();
+
         bool HaveFullHouse();
 
-        bool HaveThreeOfAKind();
+        bool HaveThreeOfAKind();*/
     }
 }

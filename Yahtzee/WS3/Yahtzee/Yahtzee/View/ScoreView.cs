@@ -31,7 +31,7 @@ namespace Yahtzee.View
                 end += "********";
             }
             divider += "|";
-            Console.WriteLine("\n   YAHTZEE SCOREBOARD");
+            Console.WriteLine("\n  SCOREBOARD");
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
             Console.WriteLine("|"+end+"|");
@@ -46,9 +46,9 @@ namespace Yahtzee.View
             {
                 foreach (Category.Type cat in category.GetValues())
                 {
-                    Console.Write("|" + category + "\t");
-                    if (cat <= category.Sixes() || cat == category.Chance())
-                        Console.Write("\t");
+                    string name = String.Format("|{0,-14}\t", category.GetName((int)cat));
+                    Console.Write(name);
+    //                Console.Write("|" + category + "\t");
                     foreach (Player player in players)
                     {
                         bool exist;

@@ -9,7 +9,7 @@ namespace Yahtzee.Model
     class DataBase
     {
         private readonly string pathToDB = $"{Environment.CurrentDirectory}\\Database\\";
-        private string fileName;
+        private string fileName = "";
 
         private IRules rules;
         private GameType gameType;
@@ -20,6 +20,7 @@ namespace Yahtzee.Model
             this.category = category;
             this.gameType = gameType;
             this.rules = rules;
+            this.fileName = gameType.ToString();
             Directory.CreateDirectory(pathToDB);
         }
         public string SaveToFile(DateTime date, int roundNumber, List<Player>players) 
@@ -86,7 +87,7 @@ namespace Yahtzee.Model
                 {
                     scoreItems = items[indexStartPlayer + 2 + j].Split('|');
                     int point = Int32.Parse(scoreItems[0]);
-                    Category.Type cat = (Category.Type)Enum.Parse(typeof(Category), (scoreItems[1]));
+                    Category.Type cat = (Category.Type)Enum.Parse(typeof(Category.Type), (scoreItems[1]));
                     Score score = new Score(cat, point);
                     scoreList.Add(score);
                 }
@@ -107,7 +108,7 @@ namespace Yahtzee.Model
         public FileInfo[] ListAllGames()
         {
             DirectoryInfo d = new DirectoryInfo(pathToDB);//Assuming Test is your Folder
-            FileInfo[] files = d.GetFiles("*.txt"); //Getting Text files
+            FileInfo[] files = d.GetFiles("*"+gameType.ToString()+"*.txt"); //Getting Text files
             return files;
         }
     }
