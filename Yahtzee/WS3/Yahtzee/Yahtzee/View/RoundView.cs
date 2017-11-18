@@ -30,6 +30,7 @@ namespace Yahtzee.View
         {
             PrintMessage("\n" + name + " time to play!");
         }
+
         public void RenderDie(int[] die)
         {
             string idAndValueOutput = "";

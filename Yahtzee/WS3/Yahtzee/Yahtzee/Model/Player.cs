@@ -32,7 +32,6 @@ namespace Yahtzee.Model
             }
         }
 
-
         public string Name { get; private set; }
         public bool IsRobot { get; private set; }
 

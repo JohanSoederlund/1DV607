@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Yahtzee.Model.Rules;
 using Yahtzee.Model.Categories;
 
@@ -12,25 +9,44 @@ namespace Yahtzee.Model
     {
         private Category category;
         private IRules rules;
-        public Robot(int id, IRules rules, Category category)
+        
+        private bool[] Dice2Roll { get; set; }
+
+        delegate bool del(int[] diceVal, int[] die);
+
+        private del KeepStraightChance;
+
+        public Robot(int id, IRules rules, Category category, GameType gameType)
             : base("Robot" + id, true)
         {
             this.rules = rules;
             this.category = category;
+            Strategy(gameType);
         }
-        public Robot(string name, IRules rules, Category category, List<Score> scores)
+        public Robot(string name, IRules rules, Category category, List<Score> scores, GameType gameType)
             : base(name, scores, true)
         {
             this.rules = rules;
             this.category = category;
+            Strategy(gameType);
         }
 
-        private bool[] Dice2Roll { get; set; }
+        private void Strategy(GameType gameType)
+        {
+            if (gameType == GameType.Yahtzee)
+            {
+                KeepStraightChance = YahtzeeStraightChance;
+            }
+            else if (gameType == GameType.Yatzy)
+            {
+                KeepStraightChance = YatzyStraightChance;
+            }
+        }
 
         public bool[] DecideDiceToRoll(int[] diceVal, int[] die)
         {
             // This is the core of the robot strategy
-            Dice2Roll = new bool[] { false, false, false, false, false };
+            Dice2Roll = new[] { false, false, false, false, false };
 
             // Priority order for robot how to act on rolled die
             if (Stand()) ;
@@ -40,7 +56,7 @@ namespace Yahtzee.Model
             else if (KeepPair(diceVal, die)) ;
             else
             {
-                Dice2Roll = new bool[] { true, true, true, true, true };
+                Dice2Roll = new[] {true, true, true, true, true};
                 Decision = "ROLL THEM ALL";
             }
             return Dice2Roll;
@@ -54,8 +70,6 @@ namespace Yahtzee.Model
 
             foreach (Category.Type cat in category.GetValues())
             {
-
-
                 int i = category.GetValue(cat);
                 getValueForCategories[i] = rules.GetValueForCategory(cat);
                 // always chose the highest score. If many on same vale chose highest category
@@ -73,7 +87,6 @@ namespace Yahtzee.Model
             }
             return highCategory;
         }
-
 
         private bool Stand()
         {
@@ -106,12 +119,14 @@ namespace Yahtzee.Model
             return false;
         }
 
-        private bool KeepStraightChance(int[] diceVal, int[] die)
+        private bool YahtzeeStraightChance(int[] diceVal, int[] die)
         {
-            // Keep good chance for straight, check small straight and large straight aren't taken
+            // Keep good chance for straight, check small straight aren't taken
             // Keep three in a row but not down to dice value 1, i.e. only high or open straight
-            if (!(GetCategoryUsed(category.SmallStraight()) && GetCategoryUsed(category.LargeStraight())))
+            if (!GetCategoryUsed(category.LargeStraight()) || !GetCategoryUsed(category.SmallStraight()))
             {
+                // Keep good chance for straight, check small straight aren't taken
+                // Keep three in a row but not down to dice value 1, i.e. only high or open straight
                 for (int i = 5; i > 2; i--)
                 {
                     if ((diceVal[i] > 0) && (diceVal[i - 1] > 0) && (diceVal[i - 2] > 0))
@@ -147,13 +162,72 @@ namespace Yahtzee.Model
             }
             return false;
         }
+        private bool YatzyStraightChance(int[] diceVal, int[] die)
+        {
+            int missing = 0;
+            int twice = 0;
+            Dice2Roll = new bool[] { false, false, false, false, false };
 
+            if (!GetCategoryUsed(category.LargeStraight()))
+            {   // Large straight 2-6, keep if all but one of them
+                for (int i = 1; i < diceVal.Length; i++)
+                {
+                    if (diceVal[i] == 0)
+                        missing++;
+                    if (diceVal[i] == 2)
+                        twice = i + 1;
+                }
+                if (missing <= 1)
+                {
+                    Decision = "KEEP GOOD CHANCE FOR HIGH STRAIGHT";
+                    for (int i = 0; i < die.Length; i++)
+                    {
+                        if (die[i] == 1)
+                            Dice2Roll[i] = true;
+                        if (die[i] == twice)
+                        {
+                            Dice2Roll[i] = true;
+                            twice = 0;  // only reroll one of the die that shows the same
+                        }
+                    }
+                    return true;
+                }
+            }
+            if (!GetCategoryUsed(category.SmallStraight()))
+            {   // Small straight 1-5, keep if all but one of them
+                missing = 0;
+                for (int i = 0; i < diceVal.Length - 1; i++)
+                {
+                    if (diceVal[i] == 0)
+                        missing++;
+                    if (diceVal[i] == 2)
+                        twice = i + 1;
+                }
+                if (missing <= 1)
+                {
+                    Decision = "KEEP GOOD CHANCE FOR SMALL STRAIGHT";
+                    for (int i = 0; i < die.Length; i++)
+                    {
+                        if (die[i] == 6)
+                            Dice2Roll[i] = true;
+                        if (die[i] == twice)
+                        {
+                            Dice2Roll[i] = true;
+                            twice = 0;  // only reroll one of the die that shows the same
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+        
         private bool KeepTwoPair(int[] diceVal, int[] die)
         {
             // Keep two pair for a full house, check full house isn't taken
             if (!GetCategoryUsed(category.FullHouse()))
             {
-                int firstPairValue = 0;
+                int firstPairValue;
                 int secondPairValue = 0;
                 for (int i = 0; i < diceVal.Length; i++)
                 {

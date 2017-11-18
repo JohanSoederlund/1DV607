@@ -21,6 +21,7 @@ namespace Yahtzee.Controller
         private CollectionOfDice collectionOfDice;
         private Category category;
         private ViewController viewController;
+        private GameType gameType;
 
         private DateTime Date { get; set; }
         private int RoundNumber { get; set; }
@@ -35,14 +36,14 @@ namespace Yahtzee.Controller
 
         private void InitGame()
         {
-            GameType gameType = new MainMenu().RenderStartMenu();
+            gameType = new MainMenu().RenderStartMenu();
 
             collectionOfDice = new CollectionOfDice();
             factory = new Factory(gameType, collectionOfDice);
             rules = factory.GetRules();
             category = factory.GetCategory();
             dataBase = new DataBase(category, rules, gameType);
-            viewController = new ViewController(category);
+            viewController = new ViewController(category, collectionOfDice);
 
             string resumeGameFile = "";
             string viewGameFile = "";
@@ -102,14 +103,13 @@ namespace Yahtzee.Controller
                 string name = viewController.PlayerName(i, out robot);
                 if (robot)
                 {
-                    players.Add(new Robot(GetNumberOfRobots() + 1, rules, category));
+                    players.Add(new Robot(GetNumberOfRobots() + 1, rules, category, gameType));
 
                 }
                 else
                 {
                     players.Add(new Player(name));
                 }
-
             }
         }
 
@@ -154,7 +154,7 @@ namespace Yahtzee.Controller
                 if (AnyDiceToRoll())
                 {
                     collectionOfDice.Roll(DieToRoll);
-                    viewController.RenderDie(collectionOfDice.GetDie());
+                    //viewController.RenderDie(collectionOfDice.GetDie());
                     if (rollNumber < 3)
                     {
                         if (player.IsRobot)

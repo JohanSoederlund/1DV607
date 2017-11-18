@@ -10,6 +10,7 @@ namespace Yahtzee.Model
     class CollectionOfDice
     {
         public const int NoOfDie = 5;
+        private List<IDieObserver> observers = new List<IDieObserver>();
         public CollectionOfDice()
         {
             Die = new List<Dice>();
@@ -17,6 +18,17 @@ namespace Yahtzee.Model
             {
                 Thread.Sleep(20);
                 Die.Add(new Dice(i));
+            }
+        }
+        public void Subscribe(IDieObserver observer)
+        {
+            observers.Add(observer);
+        }
+        private void NotifyAll()
+        {
+            foreach (var observer in observers)
+            {
+                if (observer != null) observer.DieRolled(GetNumberOfDiceFaceValue(), GetDie());
             }
         }
 
@@ -31,6 +43,7 @@ namespace Yahtzee.Model
                     dice.Roll();
                 }
             }
+            NotifyAll();
         }
 
         public int[] GetDie()

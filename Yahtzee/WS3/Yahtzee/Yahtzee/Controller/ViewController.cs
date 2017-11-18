@@ -11,19 +11,31 @@ using Yahtzee.Model.Categories;
 namespace Yahtzee.View
 {
 
-    class ViewController
+    class ViewController : IDieObserver
     {
         private ScoreView scoreView;
         private SetupView setupView;
         private RoundView roundView;
         private Category category;
 
-        public ViewController(Category category)
+        private CollectionOfDice collectionOfDice;
+
+        public ViewController(Category category, CollectionOfDice collectionOfDice)
         {
             setupView = new SetupView();
             scoreView = new ScoreView(category);
             roundView = new RoundView(category);
-           }
+            Subscribe(collectionOfDice);
+        }
+
+        private void Subscribe(CollectionOfDice collectionOfDice)
+        {
+            collectionOfDice.Subscribe(this);
+        }
+        public void DieRolled(int[] dieValues, int[] die)
+        {
+            roundView.RenderDie(die);
+        }
 
         public int NumberOfPlayers()
         {
@@ -47,6 +59,7 @@ namespace Yahtzee.View
         {
             roundView.RenderRoundNumber(roundNumber);
         }
+        
         public void RenderRound(string name)
         {
             roundView.RenderRound(name);
@@ -56,6 +69,7 @@ namespace Yahtzee.View
         {
             return roundView.GetDieToRoll();
         }
+        
         public void RenderDie(int[] die)
         {
             roundView.RenderDie(die);
@@ -113,5 +127,7 @@ namespace Yahtzee.View
         {
             return roundView.SelectGame(files);
         }
+
+        
     }
 }

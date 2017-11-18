@@ -55,6 +55,7 @@
     <Compile Include="Model\DataBase.cs" />
     <Compile Include="Model\Dice.cs" />
     <Compile Include="Model\Factory.cs" />
+    <Compile Include="Model\IDieObserver.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Robot.cs" />
     <Compile Include="Model\Rules\BaseRules.cs" />

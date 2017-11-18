@@ -93,7 +93,7 @@ namespace Yahtzee.Model
                 }
                 if (isRobot)
                 {
-                    Robot robot = new Robot(name, rules, category, scoreList);
+                    Robot robot = new Robot(name, rules, category, scoreList, gameType);
                     players.Add(robot);
                 }
                 else
