@@ -13,13 +13,10 @@ namespace Yahtzee.View
 
     class ViewController : IDieObserver
     {
-        private ScoreView scoreView;
-        private SetupView setupView;
-        private RoundView roundView;
-        private Category category;
-
-        private CollectionOfDice collectionOfDice;
-
+        private readonly ScoreView scoreView;
+        private readonly SetupView setupView;
+        private readonly RoundView roundView;
+ 
         public ViewController(Category category, CollectionOfDice collectionOfDice)
         {
             setupView = new SetupView();

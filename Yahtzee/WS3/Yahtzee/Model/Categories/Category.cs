@@ -23,8 +23,6 @@ namespace Yahtzee.Model.Categories
 
         abstract public int Length();
 
-        //abstract public Type GetCategory(int index);
-
 
         abstract public Category.Type[] Categories();
 
@@ -32,7 +30,6 @@ namespace Yahtzee.Model.Categories
 
         abstract public int GetValue(object type);
 
-        //abstract public int GetValue(int index);
 
         public abstract Type GetCategory(int i);
 

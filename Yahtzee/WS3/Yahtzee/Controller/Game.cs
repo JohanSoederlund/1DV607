@@ -39,18 +39,16 @@ namespace Yahtzee.Controller
             gameType = new MainMenu().RenderStartMenu();
 
             collectionOfDice = new CollectionOfDice();
-            factory = new Factory(gameType, collectionOfDice);
-            rules = factory.GetRules();
+            factory = new Factory(gameType);
+            rules = factory.GetRules(collectionOfDice);
             category = factory.GetCategory();
             dataBase = new DataBase(category, rules, gameType);
             viewController = new ViewController(category, collectionOfDice);
 
-            string resumeGameFile = "";
-            string viewGameFile = "";
             while (viewController.ViewGameResult())
             {
                 FileInfo[] files = dataBase.ListAllGames();
-                viewGameFile = viewController.SelectGame(files);
+                string viewGameFile = viewController.SelectGame(files);
                 if (viewGameFile != "")
                 {
                     ViewGameFile(viewGameFile);
@@ -59,11 +57,11 @@ namespace Yahtzee.Controller
             if (viewController.ResumeGame())
             {
                 FileInfo[] files = dataBase.ListAllGames();
-                resumeGameFile = viewController.SelectGame(files);
-            }
-            if (resumeGameFile != "")
-            {
-                ResumeGameFile(resumeGameFile);
+                string resumeGameFile = viewController.SelectGame(files);
+                if (resumeGameFile != "")
+                {
+                    ResumeGameFile(resumeGameFile);
+                }
             }
             else
             {

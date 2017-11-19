@@ -18,11 +18,5 @@ namespace Yahtzee.Model.Rules
 
         BaseRules BaseRules { get; set; }
 
-        /*
-        bool HaveYahtzee();
-
-        bool HaveFullHouse();
-
-        bool HaveThreeOfAKind();*/
     }
 }

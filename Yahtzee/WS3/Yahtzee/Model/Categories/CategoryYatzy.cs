@@ -25,7 +25,6 @@ namespace Yahtzee.Model.Categories
         public override Array GetValues() { return Enum.GetValues(typeof(Type)); }
 
 
-        //public override Type GetCategory(int i) { return System.Enum.GetName(typeof(Type), i); }
 
         public override int GetValue(Category.Type type) { return (int)type; }
 

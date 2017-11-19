@@ -32,7 +32,6 @@ namespace Yahtzee.Model.Categories
 
         public override int GetValue(object type) { return (int)type; }
 
-        //public int GetValue(int index) { return (int)type; }
 
         public override Category.Type Yahtzee()
         {
