@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
 using Yahtzee.Model;
 using Yahtzee.Model.Categories;
 
 namespace Yahtzee.View
 {
-
     class ViewController : IDieObserver
     {
         private readonly ScoreView scoreView;
@@ -29,6 +25,7 @@ namespace Yahtzee.View
         {
             collectionOfDice.Subscribe(this);
         }
+
         public void DieRolled(int[] dieValues, int[] die)
         {
             roundView.RenderDie(die);
@@ -62,6 +59,7 @@ namespace Yahtzee.View
             roundView.RenderRound(name);
            
         }
+
         public bool[] GetDieToRoll()
         {
             return roundView.GetDieToRoll();
@@ -71,6 +69,7 @@ namespace Yahtzee.View
         {
             roundView.RenderDie(die);
         }
+
         public void RenderUnavailableCategories(List<Category.Type> unavailableCategories)
         {
             if (roundView.SelectActivity(DisplayType.ViewAvaialbleCategories, false))
@@ -78,15 +77,18 @@ namespace Yahtzee.View
                 roundView.RenderUnavailableCategories(unavailableCategories);
             }
         }
+
         public Category.Type RenderCategory(List<Category.Type> unavailableCategories)
         {
             return roundView.RenderCategory(unavailableCategories);
         }
+
         public void RenderDieToRoll(bool[] DieToRoll, string decision = "")
         {
             roundView.RenderDieToRoll(DieToRoll, decision);
             Thread.Sleep(2000);
         }
+
         public void RenderRoundScore(int roundScore, Category.Type usedCategory)
         {
             scoreView.RenderRoundScore(roundScore, usedCategory);
@@ -96,35 +98,40 @@ namespace Yahtzee.View
         {
             return roundView.ContinueGame();
         }
+
         public bool ResumeGame()
         {
             return roundView.SelectActivity(DisplayType.ResumeSavedGame);
         }
+
         public bool ViewGameResult()
         {
             return roundView.SelectActivity(DisplayType.InspectSavedGame);
         }
+
         public bool ViewFullList()
         {
             return roundView.SelectActivity(DisplayType.ViewFullScoreBord);
         }
+
         public void GameSaved(string fileName)
         {
             roundView.GameSaved(fileName);
         }
+
         public void GameFinished(string winner, int score)
         {
             roundView.GameFinished(winner, score);
         }
+
         public void RenderScoreBoard(List<Player> players, string date = null, bool fullList = true)
         {
             scoreView.RenderScoreBoard(players, date, fullList);
         }
+
         public string SelectGame(FileInfo[] files)
         {
             return roundView.SelectGame(files);
         }
-
-        
     }
 }

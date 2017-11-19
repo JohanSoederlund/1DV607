@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yahtzee.Model.Categories;
+﻿using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Model.Rules
 {
     class YahtzeeRules : IRules
     {
-
-
         private CollectionOfDice collectionOfDice;
         private const int yahtzeeValue = 50;
         private const int largeStraightValue = 40;
@@ -22,8 +15,6 @@ namespace Yahtzee.Model.Rules
             this.collectionOfDice = collectionOfDice;
             BaseRules = new BaseRules(collectionOfDice);
         }
-
-
 
         public BaseRules BaseRules{ get; set;}
 
@@ -72,56 +63,6 @@ namespace Yahtzee.Model.Rules
             }
             return retValueForCategory;
         }
-        /*
-        public bool HaveYahtzee()
-        {
-            int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
-            bool retVal = false;
-            for (int i = 0; i < diceVal.Length; i++)
-            {
-                if (diceVal[i] == 5)
-                    retVal = true;
-            }
-            return retVal;
-        }
-       
-        public bool HaveFullHouse()
-        {
-            int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
-            bool retValue = false;
-            for (int i = 0; i < diceVal.Length; i++)
-            {
-                if (diceVal[i] == 2)
-                {
-                    for (int j = 0; j < diceVal.Length; j++)
-                    {
-                        if (diceVal[j] == 3)
-                            retValue = true;
-                    }
-                }
-            }
-            return retValue;
-        }
-        public bool HaveThreeOfAKind()
-        {
-
-            if (collectionOfDice.GetMaxNumberOfSameValues() >= 3)
-            {
-                return true;
-            }
-            return false;
-        }
-        public bool HaveFourOfAKind()
-        {
-
-            if (collectionOfDice.GetMaxNumberOfSameValues() >= 4)
-            {
-                return true;
-            }
-            return false;
-        }
-             
-             */
 
         public bool HaveLargeStraight()
         {
@@ -150,6 +91,7 @@ namespace Yahtzee.Model.Rules
             }
             return false;
         }
+
         public bool HaveSmallStraight()
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
@@ -195,26 +137,32 @@ namespace Yahtzee.Model.Rules
         {
             return collectionOfDice.GetSum();
         }
+
         private int FourOfAKind()
         {
             return collectionOfDice.GetSum();
         }
+
         private int FullHouse()
         {
             return fullHouseValue;
         }
+
         private int SmallStraight()
         {
             return smallStraightValue;
         }
+
         private int LargeStraight()
         {
             return largeStraightValue;
         }
+
         private int Yahtzee()
         {
             return yahtzeeValue;
         }
+
         private int SumOfSameCategory(CategoryYahtzee.Type category)
         {
             int faceValue = (int)category + 1;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Yahtzee.Model.Rules;
 using Yahtzee.Model.Categories;
 
@@ -45,10 +44,8 @@ namespace Yahtzee.Model
 
         public bool[] DecideDiceToRoll(int[] diceVal, int[] die)
         {
-            // This is the core of the robot strategy
             Dice2Roll = new[] { false, false, false, false, false };
 
-            // Priority order for robot how to act on rolled die
             if (Stand()) ;
             else if (KeepThreeOrFourOfAKind(diceVal, die)) ;
             else if (KeepStraightChance(diceVal, die)) ;

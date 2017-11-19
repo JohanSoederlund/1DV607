@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Yahtzee.Model
 {
@@ -11,6 +7,7 @@ namespace Yahtzee.Model
     {
         public const int NoOfDie = 5;
         private List<IDieObserver> observers = new List<IDieObserver>();
+
         public CollectionOfDice()
         {
             Die = new List<Dice>();
@@ -20,10 +17,12 @@ namespace Yahtzee.Model
                 Die.Add(new Dice(i));
             }
         }
+
         public void Subscribe(IDieObserver observer)
         {
             observers.Add(observer);
         }
+
         private void NotifyAll()
         {
             foreach (var observer in observers)
@@ -56,6 +55,7 @@ namespace Yahtzee.Model
             }
             return dieValues;
         }
+
         public int[] GetNumberOfDiceFaceValue()
         {
             int[] dieValues = { 0, 0, 0, 0, 0, 0 };
@@ -65,6 +65,7 @@ namespace Yahtzee.Model
             }
             return dieValues;
         }
+
         public int GetMaxNumberOfSameValues()
         {
             // Return total value if at least three dice of same, else 0
@@ -77,6 +78,7 @@ namespace Yahtzee.Model
             }
             return highestNumberOfSame;
         }
+
         public int GetSum()
         {
             int sum = 0;

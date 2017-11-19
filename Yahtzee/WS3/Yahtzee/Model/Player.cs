@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Model
@@ -15,7 +11,6 @@ namespace Yahtzee.Model
 
         public Player()
         {
-           
             this.scoreList = new List<Score>();
         }
 

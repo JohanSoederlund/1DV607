@@ -25,7 +25,6 @@ namespace Yahtzee.Model
         }
         public string SaveToFile(DateTime date, int roundNumber, List<Player>players) 
         {
-
             string dateStr = date.ToString();
             dateStr = dateStr.Substring(2, 2) + dateStr.Substring(5, 2) + dateStr.Substring(8, 2) + dateStr.Substring(11, 2) + dateStr.Substring(14, 2) + dateStr.Substring(17, 2) + ".txt";
 
@@ -107,7 +106,7 @@ namespace Yahtzee.Model
 
         public FileInfo[] ListAllGames()
         {
-            DirectoryInfo d = new DirectoryInfo(pathToDB);//Assuming Test is your Folder
+            DirectoryInfo d = new DirectoryInfo(pathToDB); //Assuming Test is your Folder
             FileInfo[] files = d.GetFiles("*"+gameType.ToString()+"*.txt"); //Getting Text files
             return files;
         }

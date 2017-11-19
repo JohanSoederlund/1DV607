@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Yahtzee.Model.Categories;
+﻿using Yahtzee.Model.Categories;
 
 namespace Yahtzee.Model.Rules
 {
-
     class YatzyRules : IRules
     {
         private CollectionOfDice collectionOfDice;
         private const int yahtzeeValue = 50;
         private const int largeStraightValue = 20;
         private const int smallStraightValue = 15;
+
         public YatzyRules(CollectionOfDice collectionOfDice)
         {
             this.collectionOfDice = collectionOfDice;
@@ -22,10 +17,8 @@ namespace Yahtzee.Model.Rules
 
         public BaseRules BaseRules { get; set; }
 
-
         public int GetValueForCategory(Category.Type category)
         {
-
             CategoryYatzy.Type categoryYatzy = (CategoryYatzy.Type)category;
             int retValueForCategory = 0;  // Default value if condition for category not met
 
@@ -93,6 +86,7 @@ namespace Yahtzee.Model.Rules
             }
             return totalValue;
         }
+
         private int TwoPair()
         {
             int totalValue = 0;
@@ -123,6 +117,7 @@ namespace Yahtzee.Model.Rules
             }
             return totalValue;
         }
+
         private int FourOfAKind()
         {
             // Select highest pair
@@ -138,22 +133,27 @@ namespace Yahtzee.Model.Rules
             }
             return totalValue;
         }
+
         private int FullHouse()
         {
             return collectionOfDice.GetSum();
         }
+
         private int SmallStraight()
         {
             return smallStraightValue;
         }
+
         private int LargeStraight()
         {
             return largeStraightValue;
         }
+
         private int Yahtzee()
         {
             return yahtzeeValue;
         }
+
         private int SumOfSameCategory(CategoryYatzy.Type category)
         {
             int faceValue = (int)category + 1;
@@ -178,6 +178,7 @@ namespace Yahtzee.Model.Rules
             }
             return false;
         }
+
         public bool HaveSmallStraight()
         {
             int[] diceValue = collectionOfDice.GetNumberOfDiceFaceValue();

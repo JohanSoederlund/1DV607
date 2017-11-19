@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Yahtzee.Model.Rules
 {
     class BaseRules
@@ -44,6 +39,7 @@ namespace Yahtzee.Model.Rules
             }
             return retValue;
         }
+
         public bool HaveThreeOfAKind()
         {
 
@@ -53,6 +49,7 @@ namespace Yahtzee.Model.Rules
             }
             return false;
         }
+
         public bool HaveFourOfAKind()
         {
 
@@ -62,6 +59,7 @@ namespace Yahtzee.Model.Rules
             }
             return false;
         }
+
         public bool HaveTwoPair()
         {
             int[] diceVal = collectionOfDice.GetNumberOfDiceFaceValue();
@@ -79,6 +77,7 @@ namespace Yahtzee.Model.Rules
             }
             return retValue;
         }
+
         public bool HavePair()
         {
             if (collectionOfDice.GetMaxNumberOfSameValues() >= 2)

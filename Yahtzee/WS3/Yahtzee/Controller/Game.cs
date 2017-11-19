@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Yahtzee.Model;
 using Yahtzee.View;
 using Yahtzee.Model.Rules;
@@ -83,6 +79,7 @@ namespace Yahtzee.Controller
             RoundNumber = roundNumber;
             viewController.RenderScoreBoard(players, date.ToString(), fullList);
         }
+
         private void ResumeGameFile(string resumeGameFile)
         {
             DateTime date = new DateTime();
@@ -91,6 +88,7 @@ namespace Yahtzee.Controller
             Date = date;
             RoundNumber = roundNumber;
         }
+
         private void PlayerSetup()
         {
             bool robot;
@@ -102,7 +100,6 @@ namespace Yahtzee.Controller
                 if (robot)
                 {
                     players.Add(new Robot(GetNumberOfRobots() + 1, rules, category, gameType));
-
                 }
                 else
                 {
@@ -110,7 +107,6 @@ namespace Yahtzee.Controller
                 }
             }
         }
-
 
         private void RunGame()
         {
@@ -128,7 +124,6 @@ namespace Yahtzee.Controller
                 RoundNumber++;
             }
             EndGame();
-
         }
 
         private void RunRound(int roundNumber)
@@ -152,7 +147,6 @@ namespace Yahtzee.Controller
                 if (AnyDiceToRoll())
                 {
                     collectionOfDice.Roll(DieToRoll);
-                    //viewController.RenderDie(collectionOfDice.GetDie());
                     if (rollNumber < 3)
                     {
                         if (player.IsRobot)
@@ -186,6 +180,7 @@ namespace Yahtzee.Controller
                 viewController.RenderRoundScore(roundScore, categoryToUse);
             }
         }
+
         private void EndGame()
         {
             string fileName = dataBase.SaveToFile(Date, RoundNumber, players);
@@ -218,6 +213,7 @@ namespace Yahtzee.Controller
             }
             return roll;
         }
+
         private int GetNumberOfRobots()
         {
             int numberOfRobots = 0;
